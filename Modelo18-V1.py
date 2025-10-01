@@ -17,12 +17,77 @@ Pendientes:
 
 
 #----------------------------------------------------------------------------------------------
+# ESTRUCTURAS DE DATOS
+#----------------------------------------------------------------------------------------------
+
+# Estructura de datos para el sistema de centro de salud
+
+# Entidad: Paciente
+paciente = {
+    "id_paciente": {
+        "activo": True,  # bool
+        "dni": "",  # str
+        "nombre": "",  # str
+        "apellido": "",  # str
+        "telefono": "",  # str
+        "email": "",  # str
+        "fecha_nacimiento": "",  # str
+        "direccion": {
+            "calle": "",  # str
+            "numero": "",  # str
+            "ciudad": ""  # str
+        }
+    }
+}
+
+# Entidad: Doctor
+doctor = {
+    "id_doctor": {
+        "activo": True,  # bool
+        "matricula": "",  # str
+        "nombre": "",  # str
+        "apellido": "",  # str
+        "especialidad": "",  # str
+        "telefono": "",  # str
+        "email": "",  # str
+        "honorarios": {
+            "monto": 0.0,  # float
+            "moneda": ""  # str
+        }
+    }
+}
+
+# Entidad: Consulta
+consulta = {
+    "id_consulta": {
+        "id_paciente": "",  # str
+        "id_doctor": "",  # str
+        "fecha_consulta": "",  # str
+        "hora_consulta": "",  # str
+        "motivo": "",  # str
+        "diagnostico": "",  # str
+        "tratamiento": "",  # str
+        "observaciones": "",  # str
+        "estado": ""  # str
+    }
+}
+
+
+#----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-def altaCliente(clientes):
+def ingresarPaciente(pacientes):
     ...
-    return clientes
+    return pacientes
 
+def modificarPaciente(pacientes):
+    ...
+
+def eliminarPaciente(pacientes):
+    ...
+
+def listarPacientes(pacientes):
+    ...
 
 
 #----------------------------------------------------------------------------------------------
@@ -31,25 +96,20 @@ def altaCliente(clientes):
 def main():
     #-------------------------------------------------
     # Inicialización de variables
-    #----------------------------------------------------------------------------------------------
-    clientes = {...}
-
+    #-------------------------------------------------
+    pacientes = {...}
 
     #-------------------------------------------------
     # Bloque de menú
-    #----------------------------------------------------------------------------------------------
+    #-------------------------------------------------
     while True:
         while True:
-            opciones = 5
+            opciones = 1
             print()
             print("---------------------------")
             print("MENÚ PRINCIPAL")
             print("---------------------------")
-            print("[1] Gestión de clientes")
-            print("[2] Opción 2")
-            print("[3] Opción 3")
-            print("[4] Opción 4")
-            print("[5] Opción 5")
+            print("[1] Gestión de Paciente")
             print("---------------------------")
             print("[0] Salir del programa")
             print("---------------------------")
@@ -72,12 +132,12 @@ def main():
                     opciones = 4
                     print()
                     print("---------------------------")
-                    print("MENÚ PRINCIPAL > MENÚ DE CLIENTES")
+                    print("MENÚ PRINCIPAL > GESTIÓN DE PACIENTE")
                     print("---------------------------")
-                    print("[1] Ingresar clientes")
-                    print("[2] Opción 2")
-                    print("[3] Opción 3")
-                    print("[4] Opción 4")
+                    print("[1] Ingresar Paciente")
+                    print("[2] Modificar Paciente")
+                    print("[3] Eliminar Paciente")
+                    print("[4] Listado de Pacientes")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -94,37 +154,23 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    clientes = altaCliente(clientes)
+                    pacientes = ingresarPaciente(pacientes)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    ...
+                    modificarPaciente(pacientes)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    ...
+                    eliminarPaciente(pacientes)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    ...
+                    listarPacientes(pacientes)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
 
-
-        elif opcionMenuPrincipal == "2":   # Opción 2 del menú principal
-            ...
-        
-        elif opcionMenuPrincipal == "3":   # Opción 3 del menú principal
-            ...
-        
-        elif opcionMenuPrincipal == "4":   # Opción 4 del menú principal
-            ...
-
-        elif opcionMenuPrincipal == "5":   # Opción 5 del menú principal
-            ...
-
         if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
             input("\nPresione ENTER para volver al menú.")
             print("\n\n")
-
 
 # Punto de entrada al programa
 main()
