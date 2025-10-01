@@ -13,7 +13,7 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-...
+import random
 
 
 #----------------------------------------------------------------------------------------------
@@ -77,7 +77,45 @@ consulta = {
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 def ingresarPaciente(pacientes):
-    ...
+    """
+    Permite ingresar un nuevo paciente al sistema.
+    Genera un id único para el paciente utilizando el módulo random.
+    """
+    print("\n--- Ingresar Paciente ---")
+    
+    # Generar un id único para el paciente
+    id_paciente = f"P{random.randint(1000, 9999)}"
+    while id_paciente in pacientes:  # Asegurarse de que el ID no esté duplicado
+        id_paciente = f"P{random.randint(1000, 9999)}"
+    
+    # Solicitar datos del paciente
+    nombre = input("Ingrese el nombre del paciente: ")
+    apellido = input("Ingrese el apellido del paciente: ")
+    dni = input("Ingrese el DNI del paciente: ")
+    telefono = input("Ingrese el teléfono del paciente: ")
+    email = input("Ingrese el email del paciente: ")
+    fecha_nacimiento = input("Ingrese la fecha de nacimiento del paciente (AAAA-MM-DD): ")
+    calle = input("Ingrese la calle de la dirección: ")
+    numero = input("Ingrese el número de la dirección: ")
+    ciudad = input("Ingrese la ciudad de la dirección: ")
+    
+    # Crear el registro del paciente
+    pacientes[id_paciente] = {
+        "activo": True,
+        "dni": dni,
+        "nombre": nombre,
+        "apellido": apellido,
+        "telefono": telefono,
+        "email": email,
+        "fecha_nacimiento": fecha_nacimiento,
+        "direccion": {
+            "calle": calle,
+            "numero": numero,
+            "ciudad": ciudad
+        }
+    }
+    
+    print(f"\nPaciente ingresado exitosamente con ID: {id_paciente}")
     return pacientes
 
 def modificarPaciente(pacientes):
@@ -97,7 +135,7 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables
     #-------------------------------------------------
-    pacientes = {...}
+    pacientes = {}
 
     #-------------------------------------------------
     # Bloque de menú
