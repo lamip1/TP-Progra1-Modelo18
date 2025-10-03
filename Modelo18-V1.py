@@ -125,7 +125,33 @@ def eliminarPaciente(pacientes):
     ...
 
 def listarPacientes(pacientes):
-    ...
+    """
+    Explicacion: esta funcion imprime los pacientes.
+
+    Entrada: la funcion recibe como parametro un diccionario de los pacientes.
+
+    Salida: la funcion imprime el listado de los pacientes.
+    """
+
+
+    for k,v in pacientes.items():
+
+        #Listado de los pacientes
+        print(k,":")
+        print("\t","DNI: ", v['dni'])
+        print("\t","Nombre: ",v["nombre"])
+        print("\t","Apellido: ",v["apellido"])
+        print("\t","Telefono: ",v["telefono"])
+        print("\t","Email: ",v["email"])
+        print("\t","Fecha de nacimiento: ",v["fecha_nacimiento"])
+        print("\t","Direccion: ")
+        print("\t\t", "Calle:", v["direccion"]["calle"])
+        print("\t\t", "Numero:", v["direccion"]["numero"])
+        print("\t\t", "Ciudad:", v["direccion"]["ciudad"])
+
+
+
+
 
 
 #----------------------------------------------------------------------------------------------
