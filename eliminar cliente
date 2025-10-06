@@ -1,3 +1,13 @@
+#----------------------------------------------------------------------------------------------
+#ELIMINAR PACIENTE 
+#----------------------------------------------------------------------------------------------
+
+# Definición de la función para eliminar cliente por ID
+def eliminar_cliente(lista_clientes, id_cliente):
+    nueva_lista = [c for c in lista_clientes if c['id'] != id_cliente]
+    eliminado = len(nueva_lista) < len(lista_clientes)
+    return nueva_lista, eliminado
+
 # Lista inicial de clientes
 clientes = [
     {'id': 1, 'nombre': 'Juan Pérez', 'email': 'juan@email.com'},
