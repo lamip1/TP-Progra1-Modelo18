@@ -149,10 +149,68 @@ def listarPacientes(pacientes):
         print("\t\t", "Numero:", v["direccion"]["numero"])
         print("\t\t", "Ciudad:", v["direccion"]["ciudad"])
 
+def ingresarDoctor(doctores):
+    ...
 
+def modificarDoctor(doctores):
+    """
+    Permite modificar los datos de un doctor existente en el sistema.
+    
+    Entrada: doctores (diccionario con los datos de los doctores).
+    Salida: Actualiza los datos del doctor seleccionado.
+    """
+    print("\n--- Modificar Doctor ---")
+    
+    # Solicitar el ID del doctor a modificar
+    id_doctor = input("Ingrese el ID del doctor que desea modificar: ")
+    
+    if id_doctor in doctores:
+        print("\nDoctor encontrado. Ingrese los nuevos datos (deje vacío para no modificar):")
+        
+        # Mostrar los datos actuales del doctor
+        print(f"Nombre actual: {doctores[id_doctor]['nombre']}")
+        nombre = input("Nuevo nombre: ")
+        print(f"Apellido actual: {doctores[id_doctor]['apellido']}")
+        apellido = input("Nuevo apellido: ")
+        print(f"Matrícula actual: {doctores[id_doctor]['matricula']}")
+        matricula = input("Nueva matrícula: ")
+        print(f"Especialidad actual: {doctores[id_doctor]['especialidad']}")
+        especialidad = input("Nueva especialidad: ")
+        print(f"Teléfono actual: {doctores[id_doctor]['telefono']}")
+        telefono = input("Nuevo teléfono: ")
+        print(f"Email actual: {doctores[id_doctor]['email']}")
+        email = input("Nuevo email: ")
+        print(f"Honorarios actuales: {doctores[id_doctor]['honorarios']['monto']} {doctores[id_doctor]['honorarios']['moneda']}")
+        monto = input("Nuevo monto de honorarios: ")
+        moneda = input("Nueva moneda de honorarios: ")
+        
+        # Actualizar los datos del doctor
+        if nombre:
+            doctores[id_doctor]['nombre'] = nombre
+        if apellido:
+            doctores[id_doctor]['apellido'] = apellido
+        if matricula:
+            doctores[id_doctor]['matricula'] = matricula
+        if especialidad:
+            doctores[id_doctor]['especialidad'] = especialidad
+        if telefono:
+            doctores[id_doctor]['telefono'] = telefono
+        if email:
+            doctores[id_doctor]['email'] = email
+        if monto:
+            doctores[id_doctor]['honorarios']['monto'] = float(monto)
+        if moneda:
+            doctores[id_doctor]['honorarios']['moneda'] = moneda
+        
+        print("\nDoctor modificado exitosamente.")
+    else:
+        print("\nEl ID del doctor no existe.")
 
+def eliminarDoctor(doctores):
+    ...
 
-
+def listarDoctores(doctores):
+    ...
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -162,18 +220,20 @@ def main():
     # Inicialización de variables
     #-------------------------------------------------
     pacientes = {}
+    doctores = {}
 
     #-------------------------------------------------
     # Bloque de menú
     #-------------------------------------------------
     while True:
         while True:
-            opciones = 1
+            opciones = 2
             print()
             print("---------------------------")
             print("MENÚ PRINCIPAL")
             print("---------------------------")
             print("[1] Gestión de Paciente")
+            print("[2] Gestión de Doctor")
             print("---------------------------")
             print("[0] Salir del programa")
             print("---------------------------")
@@ -228,6 +288,48 @@ def main():
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarPacientes(pacientes)
+
+                input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
+                print("\n\n")
+
+        elif opcionMenuPrincipal == "2":   # Opción 2 del menú principal
+            while True:
+                while True:
+                    opciones = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > GESTIÓN DE DOCTOR")
+                    print("---------------------------")
+                    print("[1] Ingresar Doctor")
+                    print("[2] Modificar Doctor")
+                    print("[3] Eliminar Doctor")
+                    print("[4] Listado de Doctores")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcionSubmenu = input("Seleccione una opción: ")
+                    if opcionSubmenu in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcionSubmenu == "0": # Opción salir del submenú
+                    break # No sale del programa, sino que vuelve al menú anterior
+                
+                elif opcionSubmenu == "1":   # Opción 1 del submenú
+                    doctores = ingresarDoctor(doctores)
+                    
+                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                    modificarDoctor(doctores)
+                
+                elif opcionSubmenu == "3":   # Opción 3 del submenú
+                    eliminarDoctor(doctores)
+                
+                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                    listarDoctores(doctores)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
