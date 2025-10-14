@@ -119,7 +119,6 @@ def ingresarPaciente(pacientes):
     return pacientes
 
 def modificarPaciente(pacientes):
-    def modificarPaciente(pacientes):
     """
     Permite modificar los datos de un paciente existente.
     """
@@ -248,7 +247,26 @@ def modificarDoctor(doctores):
         print("\nEl ID del doctor no existe.")
 
 def eliminarDoctor(doctores):
-    ...
+    
+    """
+    Explicacion: esta funcion elimina un doctor.
+    Entrada: esta funcion recibe como parametro el id del doctor junto con el diccionario de los doctores.
+    Salida: eliminacion del doctor.
+    """
+
+    id_doctor = int(input("Ingresar el id del doctor que desea eliminar: "))
+
+    if id_doctor in doctores:
+
+        doctores.pop(id_doctor)
+
+        return "Doctor eliminado con exito."
+
+    else:
+
+        return "Doctor no encontrado."
+
+
 
 def listarDoctores(doctores):
     ...
