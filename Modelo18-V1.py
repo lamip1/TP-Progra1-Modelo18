@@ -190,7 +190,50 @@ def listarPacientes(pacientes):
         print("\t\t", "Ciudad:", v["direccion"]["ciudad"])
 
 def ingresarDoctor(doctores):
-    ...
+    def ingresarDoctor(doctores):
+    """
+    Permite ingresar o actualizar un doctor según la matrícula.
+    """
+    print("\n--- Ingresar Doctor ---")
+    
+    matricula = input("Ingrese la matrícula profesional del doctor: ")
+    
+    if matricula in doctores:
+        print("\n⚠️ Ya existe un doctor con esa matrícula.")
+        doctor = doctores[matricula]
+        print(f"Nombre actual: {doctor['nombre']} {doctor['apellido']}")
+        print(f"Especialidad actual: {doctor['especialidad']}")
+        opcion = input("¿Desea modificar los datos? (S/N): ").upper()
+        if opcion != "S":
+            print("No se realizaron cambios.")
+            return doctores
+    
+    # Solicitar datos nuevos o actualizados
+    nombre = input("Ingrese el nombre del doctor: ")
+    apellido = input("Ingrese el apellido del doctor: ")
+    especialidad = input("Ingrese la especialidad: ")
+    telefono = input("Ingrese el teléfono del doctor: ")
+    email = input("Ingrese el email del doctor: ")
+    monto = float(input("Ingrese el monto de los honorarios: "))
+    moneda = input("Ingrese la moneda (por ejemplo, ARS, USD): ")
+    
+    doctores[matricula] = {
+        "activo": True,
+        "matricula": matricula,
+        "nombre": nombre,
+        "apellido": apellido,
+        "especialidad": especialidad,
+        "telefono": telefono,
+        "email": email,
+        "honorarios": {
+            "monto": monto,
+            "moneda": moneda
+        }
+    }
+    
+    print(f"\nDoctor registrado/modificado exitosamente con matrícula: {matricula}")
+    return doctores
+
 
 def modificarDoctor(doctores):
     """
