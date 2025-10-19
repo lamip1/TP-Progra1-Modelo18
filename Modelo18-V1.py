@@ -23,10 +23,9 @@ import random
 # Estructura de datos para el sistema de centro de salud
 
 # Entidad: Paciente
-paciente = {
-    "id_paciente": {
+pacientes = {
+    "dni": {  # Clave principal: DNI del paciente
         "activo": True,  # bool
-        "dni": "",  # str
         "nombre": "",  # str
         "apellido": "",  # str
         "telefono": "",  # str
@@ -41,10 +40,9 @@ paciente = {
 }
 
 # Entidad: Doctor
-doctor = {
-    "id_doctor": {
+doctores = {
+    "matricula": {  # Clave principal: número de matrícula del doctor
         "activo": True,  # bool
-        "matricula": "",  # str
         "nombre": "",  # str
         "apellido": "",  # str
         "especialidad": "",  # str
@@ -58,10 +56,10 @@ doctor = {
 }
 
 # Entidad: Consulta
-consulta = {
-    "id_consulta": {
-        "id_paciente": "",  # str
-        "id_doctor": "",  # str
+consultas = {
+    "id_consulta": {  # Clave principal: ID único de la consulta
+        "dni_paciente": "",  # str (DNI del paciente)
+        "matricula_doctor": "",  # str (Matrícula del doctor)
         "fecha_consulta": "",  # str
         "hora_consulta": "",  # str
         "motivo": "",  # str
@@ -78,31 +76,88 @@ consulta = {
 #----------------------------------------------------------------------------------------------
 def ingresarPaciente(pacientes):
     """
-    Permite ingresar un nuevo paciente al sistema.
-    Genera un id único para el paciente utilizando el módulo random.
+    Permite ingresar un nuevo paciente al sistema, verificando los datos ingresados.
     """
     print("\n--- Ingresar Paciente ---")
     
-    # Generar un id único para el paciente
-    id_paciente = f"P{random.randint(1000, 9999)}"
-    while id_paciente in pacientes:  # Asegurarse de que el ID no esté duplicado
-        id_paciente = f"P{random.randint(1000, 9999)}"
+    # Solicitar y validar el DNI
+    while True:
+        dni = input("Ingrese el DNI del paciente (solo números): ")
+        if dni.isdigit() and len(dni) >= 7:  # Verifica que sea numérico y tenga al menos 7 dígitos
+            if dni in pacientes:
+                print("\nYa existe un paciente con ese DNI.")
+                return pacientes
+            break
+        else:
+            print("DNI inválido. Intente nuevamente.")
     
-    # Solicitar datos del paciente
-    nombre = input("Ingrese el nombre del paciente: ")
-    apellido = input("Ingrese el apellido del paciente: ")
-    dni = input("Ingrese el DNI del paciente: ")
-    telefono = input("Ingrese el teléfono del paciente: ")
-    email = input("Ingrese el email del paciente: ")
-    fecha_nacimiento = input("Ingrese la fecha de nacimiento del paciente (AAAA-MM-DD): ")
-    calle = input("Ingrese la calle de la dirección: ")
-    numero = input("Ingrese el número de la dirección: ")
-    ciudad = input("Ingrese la ciudad de la dirección: ")
+    # Solicitar y validar el nombre
+    while True:
+        nombre = input("Ingrese el nombre del paciente: ").strip()
+        if nombre.isalpha():  # Verifica que solo contenga letras
+            break
+        else:
+            print("Nombre inválido. Intente nuevamente.")
+    
+    # Solicitar y validar el apellido
+    while True:
+        apellido = input("Ingrese el apellido del paciente: ").strip()
+        if apellido.isalpha():  # Verifica que solo contenga letras
+            break
+        else:
+            print("Apellido inválido. Intente nuevamente.")
+    
+    # Solicitar y validar el teléfono
+    while True:
+        telefono = input("Ingrese el teléfono del paciente (solo números): ")
+        if telefono.isdigit() and len(telefono) >= 8:  # Verifica que sea numérico y tenga al menos 8 dígitos
+            break
+        else:
+            print("Teléfono inválido. Intente nuevamente.")
+    
+    # Solicitar y validar el email
+    while True:
+        email = input("Ingrese el email del paciente: ").strip()
+        if "@" in email and "." in email:  # Verifica que tenga un formato básico de email
+            break
+        else:
+            print("Email inválido. Intente nuevamente.")
+    
+    # Solicitar y validar la fecha de nacimiento
+    while True:
+        fecha_nacimiento = input("Ingrese la fecha de nacimiento del paciente (AAAA-MM-DD): ")
+        try:
+            año, mes, día = map(int, fecha_nacimiento.split("-"))
+            if len(fecha_nacimiento) == 10 and 1900 <= año <= 2025 and 1 <= mes <= 12 and 1 <= día <= 31:
+                break
+        except ValueError:
+            print("Fecha de nacimiento inválida. Intente nuevamente.")
+    
+    # Solicitar y validar la dirección
+    while True:
+        calle = input("Ingrese la calle de la dirección: ").strip()
+        if calle:
+            break
+        else:
+            print("Calle inválida. Intente nuevamente.")
+    
+    while True:
+        numero = input("Ingrese el número de la dirección: ")
+        if numero.isdigit():  # Verifica que sea numérico
+            break
+        else:
+            print("Número inválido. Intente nuevamente.")
+    
+    while True:
+        ciudad = input("Ingrese la ciudad de la dirección: ").strip()
+        if ciudad.isalpha():  # Verifica que solo contenga letras
+            break
+        else:
+            print("Ciudad inválida. Intente nuevamente.")
     
     # Crear el registro del paciente
-    pacientes[id_paciente] = {
+    pacientes[dni] = {
         "activo": True,
-        "dni": dni,
         "nombre": nombre,
         "apellido": apellido,
         "telefono": telefono,
@@ -115,7 +170,7 @@ def ingresarPaciente(pacientes):
         }
     }
     
-    print(f"\nPaciente ingresado exitosamente con ID: {id_paciente}")
+    print(f"\nPaciente ingresado exitosamente con DNI: {dni}")
     return pacientes
 
 def modificarPaciente(pacientes):
@@ -123,15 +178,14 @@ def modificarPaciente(pacientes):
     Permite modificar los datos de un paciente existente.
     """
     print("\n--- Modificar Paciente ---")
-    id_paciente = input("Ingrese el ID del paciente que desea modificar: ")
+    dni = input("Ingrese el DNI del paciente que desea modificar: ")
 
-    if id_paciente in pacientes:
-        paciente = pacientes[id_paciente]
+    if dni in pacientes:
+        paciente = pacientes[dni]
         print("\nPaciente encontrado. Ingrese los nuevos datos (deje vacío para mantener el actual):")
 
         nombre = input(f"Nombre actual ({paciente['nombre']}): ") or paciente['nombre']
         apellido = input(f"Apellido actual ({paciente['apellido']}): ") or paciente['apellido']
-        dni = input(f"DNI actual ({paciente['dni']}): ") or paciente['dni']
         telefono = input(f"Teléfono actual ({paciente['telefono']}): ") or paciente['telefono']
         email = input(f"Email actual ({paciente['email']}): ") or paciente['email']
         fecha_nacimiento = input(f"Fecha nacimiento actual ({paciente['fecha_nacimiento']}): ") or paciente['fecha_nacimiento']
@@ -140,9 +194,8 @@ def modificarPaciente(pacientes):
         ciudad = input(f"Ciudad actual ({paciente['direccion']['ciudad']}): ") or paciente['direccion']['ciudad']
 
         # Actualización del registro
-        pacientes[id_paciente] = {
+        pacientes[dni] = {
             "activo": True,
-            "dni": dni,
             "nombre": nombre,
             "apellido": apellido,
             "telefono": telefono,
@@ -155,9 +208,9 @@ def modificarPaciente(pacientes):
             }
         }
 
-        print(f"\nPaciente con ID {id_paciente} modificado exitosamente.")
+        print(f"\nPaciente con DNI {dni} modificado exitosamente.")
     else:
-        print("\nEl ID del paciente no existe.")
+        print("\nEl DNI del paciente no existe.")
     
     return pacientes
 
@@ -173,7 +226,6 @@ def listarPacientes(pacientes):
     Salida: la funcion imprime el listado de los pacientes.
     """
 
-
     for k,v in pacientes.items():
 
         #Listado de los pacientes
@@ -187,10 +239,9 @@ def listarPacientes(pacientes):
         print("\t","Direccion: ")
         print("\t\t", "Calle:", v["direccion"]["calle"])
         print("\t\t", "Numero:", v["direccion"]["numero"])
-        print("\t\t", "Ciudad:", v["direccion"]["ciudad"])
+        print("\t\t", "Ciudad:", v["direccion"]["ciudad"]) 
 
 def ingresarDoctor(doctores):
-    def ingresarDoctor(doctores):
     """
     Permite ingresar o actualizar un doctor según la matrícula.
     """
@@ -199,7 +250,7 @@ def ingresarDoctor(doctores):
     matricula = input("Ingrese la matrícula profesional del doctor: ")
     
     if matricula in doctores:
-        print("\n⚠️ Ya existe un doctor con esa matrícula.")
+        print("\n Ya existe un doctor con esa matrícula.")
         doctor = doctores[matricula]
         print(f"Nombre actual: {doctor['nombre']} {doctor['apellido']}")
         print(f"Especialidad actual: {doctor['especialidad']}")
@@ -234,82 +285,63 @@ def ingresarDoctor(doctores):
     print(f"\nDoctor registrado/modificado exitosamente con matrícula: {matricula}")
     return doctores
 
-
 def modificarDoctor(doctores):
     """
     Permite modificar los datos de un doctor existente en el sistema.
-    
-    Entrada: doctores (diccionario con los datos de los doctores).
-    Salida: Actualiza los datos del doctor seleccionado.
     """
     print("\n--- Modificar Doctor ---")
-    
-    # Solicitar el ID del doctor a modificar
-    id_doctor = input("Ingrese el ID del doctor que desea modificar: ")
-    
-    if id_doctor in doctores:
-        print("\nDoctor encontrado. Ingrese los nuevos datos (deje vacío para no modificar):")
-        
-        # Mostrar los datos actuales del doctor
-        print(f"Nombre actual: {doctores[id_doctor]['nombre']}")
-        nombre = input("Nuevo nombre: ")
-        print(f"Apellido actual: {doctores[id_doctor]['apellido']}")
-        apellido = input("Nuevo apellido: ")
-        print(f"Matrícula actual: {doctores[id_doctor]['matricula']}")
-        matricula = input("Nueva matrícula: ")
-        print(f"Especialidad actual: {doctores[id_doctor]['especialidad']}")
-        especialidad = input("Nueva especialidad: ")
-        print(f"Teléfono actual: {doctores[id_doctor]['telefono']}")
-        telefono = input("Nuevo teléfono: ")
-        print(f"Email actual: {doctores[id_doctor]['email']}")
-        email = input("Nuevo email: ")
-        print(f"Honorarios actuales: {doctores[id_doctor]['honorarios']['monto']} {doctores[id_doctor]['honorarios']['moneda']}")
-        monto = input("Nuevo monto de honorarios: ")
-        moneda = input("Nueva moneda de honorarios: ")
-        
-        # Actualizar los datos del doctor
-        if nombre:
-            doctores[id_doctor]['nombre'] = nombre
-        if apellido:
-            doctores[id_doctor]['apellido'] = apellido
-        if matricula:
-            doctores[id_doctor]['matricula'] = matricula
-        if especialidad:
-            doctores[id_doctor]['especialidad'] = especialidad
-        if telefono:
-            doctores[id_doctor]['telefono'] = telefono
-        if email:
-            doctores[id_doctor]['email'] = email
-        if monto:
-            doctores[id_doctor]['honorarios']['monto'] = float(monto)
-        if moneda:
-            doctores[id_doctor]['honorarios']['moneda'] = moneda
-        
-        print("\nDoctor modificado exitosamente.")
+    matricula = input("Ingrese la matrícula del doctor que desea modificar: ")
+
+    if matricula in doctores:
+        doctor = doctores[matricula]
+        print("\nDoctor encontrado. Ingrese los nuevos datos (deje vacío para mantener el actual):")
+
+        nombre = input(f"Nombre actual ({doctor['nombre']}): ") or doctor['nombre']
+        apellido = input(f"Apellido actual ({doctor['apellido']}): ") or doctor['apellido']
+        especialidad = input(f"Especialidad actual ({doctor['especialidad']}): ") or doctor['especialidad']
+        telefono = input(f"Teléfono actual ({doctor['telefono']}): ") or doctor['telefono']
+        email = input(f"Email actual ({doctor['email']}): ") or doctor['email']
+        monto = input(f"Honorarios actuales ({doctor['honorarios']['monto']}): ") or doctor['honorarios']['monto']
+        moneda = input(f"Moneda actual ({doctor['honorarios']['moneda']}): ") or doctor['honorarios']['moneda']
+
+        # Actualización del registro
+        doctores[matricula] = {
+            "activo": True,
+            "nombre": nombre,
+            "apellido": apellido,
+            "especialidad": especialidad,
+            "telefono": telefono,
+            "email": email,
+            "honorarios": {
+                "monto": float(monto),
+                "moneda": moneda
+            }
+        }
+
+        print(f"\nDoctor con matrícula {matricula} modificado exitosamente.")
     else:
-        print("\nEl ID del doctor no existe.")
+        print("\nLa matrícula del doctor no existe.")
+    
+    return doctores
 
 def eliminarDoctor(doctores):
-    
     """
     Explicacion: esta funcion elimina un doctor.
     Entrada: esta funcion recibe como parametro el id del doctor junto con el diccionario de los doctores.
     Salida: eliminacion del doctor.
     """
 
-    id_doctor = int(input("Ingresar el id del doctor que desea eliminar: "))
+    matricula = int(input("Ingresar el numero de matricula del doctor que desea eliminar: "))
 
-    if id_doctor in doctores:
+    if matricula in doctores:
 
-        doctores.pop(id_doctor)
+        doctores.pop(matricula)
 
         return "Doctor eliminado con exito."
 
     else:
 
         return "Doctor no encontrado."
-
-
 
 def listarDoctores(doctores):
     ...
