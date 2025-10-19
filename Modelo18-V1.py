@@ -229,8 +229,7 @@ def listarPacientes(pacientes):
     for k,v in pacientes.items():
 
         #Listado de los pacientes
-        print(k,":")
-        print("\t","DNI: ", v['dni'])
+        print("DNI: ",k,":")
         print("\t","Nombre: ",v["nombre"])
         print("\t","Apellido: ",v["apellido"])
         print("\t","Telefono: ",v["telefono"])
