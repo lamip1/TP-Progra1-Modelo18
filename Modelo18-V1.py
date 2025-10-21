@@ -467,7 +467,65 @@ def registrarConsulta(consultas, pacientes, doctores):
     return consultas
 
 def consultasDelMes(consultas):
-    ...
+    def consultasDelMes(consultas):
+    """
+    Explicación:
+    Muestra todas las consultas registradas en un mes y año específicos.
+
+    Entrada:
+    - consultas: diccionario de consultas existentes.
+
+    Salida:
+    - Imprime el listado de consultas del mes seleccionado.
+    """
+    print("\n--- Consultas del Mes ---")
+
+    # Solicitar año
+    año = input("Ingrese el año (AAAA): ").strip()
+    if not (año.isdigit() and 1900 <= int(año) <= 2025):
+        print("Año inválido. Operación cancelada.")
+        return
+    año = int(año)
+
+    # Solicitar mes
+    mes = input("Ingrese el mes (1-12): ").strip()
+    if not (mes.isdigit() and 1 <= int(mes) <= 12):
+        print("Mes inválido. Operación cancelada.")
+        return
+    mes = int(mes)
+
+    # Filtrar consultas del mes
+    consultas_filtradas = {}
+    for id_consulta, datos in consultas.items():
+        fecha = datos.get("fecha_consulta", "")
+
+        # Validar formato de fecha: AAAA-MM-DD
+        if len(fecha) == 10 and fecha.count("-") == 2:
+            partes = fecha.split("-")
+            if len(partes) == 3 and partes[0].isdigit() and partes[1].isdigit() and partes[2].isdigit():
+                año_c, mes_c, dia_c = int(partes[0]), int(partes[1]), int(partes[2])
+                if año_c == año and mes_c == mes:
+                    consultas_filtradas[id_consulta] = datos
+
+    # Mostrar resultados
+    if len(consultas_filtradas) == 0:
+        print(f"\nNo hay consultas registradas para {mes:02d}/{año}.")
+    else:
+        print(f"\nConsultas registradas en {mes:02d}/{año}:")
+        print("--------------------------------------------------")
+        contador = 0
+        for id_consulta, datos in consultas_filtradas.items():
+            contador += 1
+            print(f"Consulta N° {contador}")
+            print(f"ID: {id_consulta}")
+            print(f"  Fecha: {datos['fecha_consulta']} - Hora: {datos['hora_consulta']}")
+            print(f"  Paciente (DNI): {datos['dni_paciente']}")
+            print(f"  Doctor (Matrícula): {datos['matricula_doctor']}")
+            print(f"  Motivo: {datos['motivo']}")
+            print(f"  Estado: {datos['estado']}")
+            print("--------------------------------------------------")
+        print(f"Total de consultas encontradas: {contador}")
+
 
 def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
     ...
