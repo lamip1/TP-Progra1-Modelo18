@@ -467,7 +467,6 @@ def registrarConsulta(consultas, pacientes, doctores):
     return consultas
 
 def consultasDelMes(consultas):
-    def consultasDelMes(consultas):
     """
     Explicación:
     Muestra todas las consultas registradas en un mes y año específicos.
@@ -546,9 +545,63 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables
     #-------------------------------------------------
-    pacientes = {}
-    doctores = {}
-    consultas = {}
+    pacientes = {
+        "12345678": {
+            "activo": True,
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "telefono": "123456789",
+            "email": "juan.perez@example.com",
+            "fecha_nacimiento": "1990-05-15",
+            "direccion": {
+                "calle": "Av. Siempre Viva",
+                "numero": "123",
+                "ciudad": "Springfield"
+            }
+        },
+        "87654321": {
+            "activo": True,
+            "nombre": "Ana",
+            "apellido": "Gómez",
+            "telefono": "987654321",
+            "email": "ana.gomez@example.com",
+            "fecha_nacimiento": "1985-10-20",
+            "direccion": {
+                "calle": "Calle Falsa",
+                "numero": "456",
+                "ciudad": "Shelbyville"
+            }
+        }
+    }
+
+    doctores = {
+        "1208661": {
+            "activo": True,
+            "nombre": "Dr. Roberto",
+            "apellido": "Martínez",
+            "especialidad": "Cardiología",
+            "telefono": "1122334455",
+            "email": "roberto.martinez@example.com",
+            "honorarios": {
+                "monto": 5000.0,
+                "moneda": "ARS"
+            }
+        }
+    }
+
+    consultas = {
+        "2025.10.21 10:30:00": {
+            "dni_paciente": "12345678",
+            "matricula_doctor": "1208661",
+            "fecha_consulta": "2025-10-21",
+            "hora_consulta": "10:30",
+            "motivo": "Chequeo general",
+            "diagnostico": "Sin novedades",
+            "tratamiento": "Ninguno",
+            "observaciones": "Paciente en buen estado de salud",
+            "estado": "Completada"
+        }
+    }
 
     #-------------------------------------------------
     # Bloque de menú
