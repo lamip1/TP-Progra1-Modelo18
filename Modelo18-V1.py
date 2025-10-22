@@ -226,16 +226,19 @@ def listarPacientes(pacientes):
     """
     print("\n--- Listado de Pacientes ---")
     for dni, paciente in pacientes.items():
-        print(f"DNI: {dni}")
-        print(f"\tNombre: {paciente['nombre']}")
-        print(f"\tApellido: {paciente['apellido']}")
-        print(f"\tEmail: {paciente['email']}")
-        print(f"\tFecha de nacimiento: {paciente['fecha_nacimiento']}")
-        print(f"\tDirección: {paciente['direccion']}")
-        print("\tTeléfonos:")
-        for key, value in paciente['telefonos'].items():
-            print(f"\t\t{key}: {value}")
-        print()
+
+        if paciente["activo"] == True:
+
+            print(f"DNI: {dni}")
+            print(f"\tNombre: {paciente['nombre']}")
+            print(f"\tApellido: {paciente['apellido']}")
+            print(f"\tEmail: {paciente['email']}")
+            print(f"\tFecha de nacimiento: {paciente['fecha_nacimiento']}")
+            print(f"\tDirección: {paciente['direccion']}")
+            print("\tTeléfonos:")
+            for key, value in paciente['telefonos'].items():
+                print(f"\t\t{key}: {value}")
+            print()
 
 def ingresarDoctor(doctores):
     """
