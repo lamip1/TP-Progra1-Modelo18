@@ -13,9 +13,7 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-import random
 import time
-
 
 #----------------------------------------------------------------------------------------------
 # ESTRUCTURAS DE DATOS
@@ -26,16 +24,16 @@ import time
 # Entidad: Paciente
 pacientes = {
     "dni": {  # Clave principal: DNI del paciente
-        "activo": True,  # bool
-        "nombre": "",  # str
-        "apellido": "",  # str
-        "telefono": "",  # str
-        "email": "",  # str
-        "fecha_nacimiento": "",  # str
-        "direccion": {
-            "calle": "",  # str
-            "numero": "",  # str
-            "ciudad": ""  # str
+        "activo": True,           # bool
+        "nombre": "",           # str
+        "apellido": "",         # str
+        "email": "",            # str
+        "fecha_nacimiento": "", # str
+        "direccion": "",       # str (según diagrama)
+        "telefonos": {           # dict de teléfonos
+            "id_telefono_1": "",  # str
+            "id_telefono_2": "",  # str
+            "id_telefono_3": ""   # str
         }
     }
 }
@@ -43,34 +41,38 @@ pacientes = {
 # Entidad: Doctor
 doctores = {
     "matricula": {  # Clave principal: número de matrícula del doctor
-        "activo": True,  # bool
-        "nombre": "",  # str
-        "apellido": "",  # str
-        "especialidad": "",  # str
-        "telefono": "",  # str
-        "email": "",  # str
-        "honorarios": {
-            "monto": 0.0,  # float
-            "moneda": ""  # str
+        "activo": True,        # bool
+        "nombre": "",        # str
+        "apellido": "",      # str
+        "email": "",         # str
+        "honorarios": 0.0,     # float
+        "telefonos": {        # dict de teléfonos
+            "id_telefono_1": "",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {   # dict de especialidades
+            "id_especialidad_1": "",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
         }
     }
 }
 
 # Entidad: Consulta
 consultas = {
-    "id_consulta": {  # Clave principal: ID único de la consulta
-        "dni_paciente": "",  # str (DNI del paciente)
-        "matricula_doctor": "",  # str (Matrícula del doctor)
-        "fecha_consulta": "",  # str
+    "id_consulta": {  # Clave principal: ID único de la consulta ("AAAA.MM.DD hh:mm:ss")
+        "id_paciente": "",    # str (DNI del paciente)
+        "id_doctor": "",      # str (Matrícula del doctor)
+        "fecha_consulta": "", # str
         "hora_consulta": "",  # str
-        "motivo": "",  # str
-        "diagnostico": "",  # str
-        "tratamiento": "",  # str
+        "motivo": "",         # str
+        "diagnostico": "",    # str
+        "tratamiento": "",    # str
         "observaciones": "",  # str
-        "estado": ""  # str
+        "estado": ""          # str
     }
 }
-
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
@@ -111,15 +113,6 @@ def ingresarPaciente(pacientes):
         else:
             print("Apellido inválido. Intente nuevamente.")
     
-    # Validar el telefono
-    telefono_valido = False
-    while not telefono_valido:
-        telefono = input("Ingrese el teléfono del paciente (solo números): ")
-        if telefono.isdigit() and len(telefono) >= 8:  # Verifica que sea numerico y tenga al menos 8 dígitos
-            telefono_valido = True
-        else:
-            print("Teléfono inválido. Intente nuevamente.")
-    
     # Validar el email
     email_valido = False
     while not email_valido:
@@ -142,44 +135,22 @@ def ingresarPaciente(pacientes):
         if not fecha_valida:
             print("Fecha de nacimiento inválida. Intente nuevamente.")
     
-    # No hay nada por validar pero se hace strip igualmente para seguir con la estructura de los demas inputs
-    calle_valida = False
-    while not calle_valida:
-        calle = input("Ingrese la calle de la dirección: ").strip()
-        if calle:
-            calle_valida = True
-        else:
-            print("Calle inválida. Intente nuevamente.")
+    direccion = input("Ingrese la dirección del paciente: ").strip()
     
-    numero_valido = False
-    while not numero_valido:
-        numero = input("Ingrese el número de la dirección: ")
-        if numero.isdigit():  # Verifica que sean solo numeros
-            numero_valido = True
-        else:
-            print("Número inválido. Intente nuevamente.")
-    
-    ciudad_valida = False
-    while not ciudad_valida:
-        ciudad = input("Ingrese la ciudad de la dirección: ").strip()
-        if ciudad.isalpha():  # Verifica que solo tenga letras
-            ciudad_valida = True
-        else:
-            print("Ciudad inválida. Intente nuevamente.")
+    telefonos = {}
+    for i in range(1, 4):
+        telefono = input(f"Ingrese el teléfono {i} del paciente (deje vacío si no aplica): ").strip()
+        telefonos[f"id_telefono_{i}"] = telefono
     
     # Crear el registro del paciente
     pacientes[dni] = {
         "activo": True,
         "nombre": nombre,
         "apellido": apellido,
-        "telefono": telefono,
         "email": email,
         "fecha_nacimiento": fecha_nacimiento,
-        "direccion": {
-            "calle": calle,
-            "numero": numero,
-            "ciudad": ciudad
-        }
+        "direccion": direccion,
+        "telefonos": telefonos
     }
     
     print(f"\nPaciente ingresado exitosamente con DNI: {dni}")
@@ -198,26 +169,32 @@ def modificarPaciente(pacientes):
 
         nombre = input(f"Nombre actual ({paciente['nombre']}): ") or paciente['nombre']
         apellido = input(f"Apellido actual ({paciente['apellido']}): ") or paciente['apellido']
-        telefono = input(f"Teléfono actual ({paciente['telefono']}): ") or paciente['telefono']
         email = input(f"Email actual ({paciente['email']}): ") or paciente['email']
         fecha_nacimiento = input(f"Fecha nacimiento actual ({paciente['fecha_nacimiento']}): ") or paciente['fecha_nacimiento']
-        calle = input(f"Calle actual ({paciente['direccion']['calle']}): ") or paciente['direccion']['calle']
-        numero = input(f"Número actual ({paciente['direccion']['numero']}): ") or paciente['direccion']['numero']
-        ciudad = input(f"Ciudad actual ({paciente['direccion']['ciudad']}): ") or paciente['direccion']['ciudad']
+        direccion = input(f"Dirección actual ({paciente['direccion']}): ") or paciente['direccion']
+        
+        telefonos = {}
+        for i in range(1, 4):
+            telefonos[f"id_telefono_{i}"] = input(f"Teléfono {i} actual ({paciente['telefonos'][f'id_telefono_{i}']}): ") or paciente['telefonos'][f'id_telefono_{i}']
+
+        # Permitir cambiar el estado 'activo' (solo S/N; deje vacío para mantener)
+        activo_input = input(f"Activo actual ({paciente.get('activo', True)}) - (S/N, deje vacío para mantener): ").strip().lower()
+        if activo_input == 's':
+            activo = True
+        elif activo_input == 'n':
+            activo = False
+        else:
+            activo = paciente.get('activo', True)
 
         # Actualización del registro
         pacientes[dni] = {
-            "activo": True,
+            "activo": activo,
             "nombre": nombre,
             "apellido": apellido,
-            "telefono": telefono,
             "email": email,
             "fecha_nacimiento": fecha_nacimiento,
-            "direccion": {
-                "calle": calle,
-                "numero": numero,
-                "ciudad": ciudad
-            }
+            "direccion": direccion,
+            "telefonos": telefonos
         }
 
         print(f"\nPaciente con DNI {dni} modificado exitosamente.")
@@ -232,8 +209,8 @@ def eliminarPaciente(pacientes):
     dni = input("Ingrese el DNI del paciente que desea eliminar: ")
 
     if dni in pacientes:
-        del pacientes[dni]
-        print(f"Paciente con DNI {dni} eliminado exitosamente.")
+        pacientes[dni]["activo"] = False
+        print(f"Paciente con DNI {dni} ha sido desactivado exitosamente.")
     else:
         print("Paciente no encontrado.")
     
@@ -252,13 +229,12 @@ def listarPacientes(pacientes):
         print(f"DNI: {dni}")
         print(f"\tNombre: {paciente['nombre']}")
         print(f"\tApellido: {paciente['apellido']}")
-        print(f"\tTeléfono: {paciente['telefono']}")
         print(f"\tEmail: {paciente['email']}")
         print(f"\tFecha de nacimiento: {paciente['fecha_nacimiento']}")
-        print("\tDirección:")
-        print(f"\t\tCalle: {paciente['direccion']['calle']}")
-        print(f"\t\tNúmero: {paciente['direccion']['numero']}")
-        print(f"\t\tCiudad: {paciente['direccion']['ciudad']}")
+        print(f"\tDirección: {paciente['direccion']}")
+        print("\tTeléfonos:")
+        for key, value in paciente['telefonos'].items():
+            print(f"\t\t{key}: {value}")
         print()
 
 def ingresarDoctor(doctores):
@@ -273,7 +249,6 @@ def ingresarDoctor(doctores):
         print("\n Ya existe un doctor con esa matrícula.")
         doctor = doctores[matricula]
         print(f"Nombre actual: {doctor['nombre']} {doctor['apellido']}")
-        print(f"Especialidad actual: {doctor['especialidad']}")
         opcion = input("¿Desea modificar los datos? (S/N): ").upper()
         if opcion != "S":
             print("No se realizaron cambios.")
@@ -282,24 +257,25 @@ def ingresarDoctor(doctores):
     # Solicitar datos nuevos o actualizados
     nombre = input("Ingrese el nombre del doctor: ")
     apellido = input("Ingrese el apellido del doctor: ")
-    especialidad = input("Ingrese la especialidad: ")
-    telefono = input("Ingrese el teléfono del doctor: ")
     email = input("Ingrese el email del doctor: ")
-    monto = float(input("Ingrese el monto de los honorarios: "))
-    moneda = input("Ingrese la moneda (por ejemplo, ARS, USD): ")
+    honorarios = float(input("Ingrese el monto de los honorarios: "))
+    
+    telefonos = {}
+    for i in range(1, 4):
+        telefonos[f"id_telefono_{i}"] = input(f"Ingrese el teléfono {i} del doctor (deje vacío si no aplica): ").strip()
+    
+    especialidades = {}
+    for i in range(1, 4):
+        especialidades[f"id_especialidad_{i}"] = input(f"Ingrese la especialidad {i} del doctor (deje vacío si no aplica): ").strip()
     
     doctores[matricula] = {
         "activo": True,
-        "matricula": matricula,
         "nombre": nombre,
         "apellido": apellido,
-        "especialidad": especialidad,
-        "telefono": telefono,
         "email": email,
-        "honorarios": {
-            "monto": monto,
-            "moneda": moneda
-        }
+        "honorarios": honorarios,
+        "telefonos": telefonos,
+        "especialidades": especialidades
     }
     
     print(f"\nDoctor registrado/modificado exitosamente con matrícula: {matricula}")
@@ -318,24 +294,35 @@ def modificarDoctor(doctores):
 
         nombre = input(f"Nombre actual ({doctor['nombre']}): ") or doctor['nombre']
         apellido = input(f"Apellido actual ({doctor['apellido']}): ") or doctor['apellido']
-        especialidad = input(f"Especialidad actual ({doctor['especialidad']}): ") or doctor['especialidad']
-        telefono = input(f"Teléfono actual ({doctor['telefono']}): ") or doctor['telefono']
         email = input(f"Email actual ({doctor['email']}): ") or doctor['email']
-        monto = input(f"Honorarios actuales ({doctor['honorarios']['monto']}): ") or doctor['honorarios']['monto']
-        moneda = input(f"Moneda actual ({doctor['honorarios']['moneda']}): ") or doctor['honorarios']['moneda']
+        honorarios = input(f"Honorarios actuales ({doctor['honorarios']}): ") or doctor['honorarios']
+        
+        telefonos = {}
+        for i in range(1, 4):
+            telefonos[f"id_telefono_{i}"] = input(f"Teléfono {i} actual ({doctor['telefonos'][f'id_telefono_{i}']}): ") or doctor['telefonos'][f'id_telefono_{i}']
+        
+        especialidades = {}
+        for i in range(1, 4):
+            especialidades[f"id_especialidad_{i}"] = input(f"Especialidad {i} actual ({doctor['especialidades'][f'id_especialidad_{i}']}): ") or doctor['especialidades'][f'id_especialidad_{i}']
+
+        # Permitir cambiar el estado 'activo' (solo S/N; deje vacío para mantener)
+        activo_input = input(f"Activo actual ({doctor.get('activo', True)}) - (S/N, deje vacío para mantener): ").strip().lower()
+        if activo_input == 's':
+            activo = True
+        elif activo_input == 'n':
+            activo = False
+        else:
+            activo = doctor.get('activo', True)
 
         # Actualización del registro
         doctores[matricula] = {
-            "activo": True,
+            "activo": activo,
             "nombre": nombre,
             "apellido": apellido,
-            "especialidad": especialidad,
-            "telefono": telefono,
             "email": email,
-            "honorarios": {
-                "monto": float(monto),
-                "moneda": moneda
-            }
+            "honorarios": float(honorarios),
+            "telefonos": telefonos,
+            "especialidades": especialidades
         }
 
         print(f"\nDoctor con matrícula {matricula} modificado exitosamente.")
@@ -355,9 +342,9 @@ def eliminarDoctor(doctores):
 
     if matricula in doctores:
 
-        doctores.pop(matricula)
+        doctores[matricula]["activo"] = False
 
-        return "Doctor eliminado con exito."
+        return "Doctor desactivado exitosamente."
 
     else:
 
@@ -373,14 +360,21 @@ def listarDoctores(doctores):
     """
     print("\n--- Listado de Doctores ---")
     for matricula, doctor in doctores.items():
-        print(f"Matrícula: {matricula}")
-        print(f"\tNombre: {doctor['nombre']}")
-        print(f"\tApellido: {doctor['apellido']}")
-        print(f"\tEspecialidad: {doctor['especialidad']}")
-        print(f"\tTeléfono: {doctor['telefono']}")
-        print(f"\tEmail: {doctor['email']}")
-        print(f"\tHonorarios: {doctor['honorarios']['monto']} {doctor['honorarios']['moneda']}")
-        print()
+
+        if doctor["activo"] == True:
+
+            print(f"Matrícula: {matricula}")
+            print(f"\tNombre: {doctor['nombre']}")
+            print(f"\tApellido: {doctor['apellido']}")
+            print(f"\tEmail: {doctor['email']}")
+            print(f"\tHonorarios: {doctor['honorarios']}")
+            print("\tTeléfonos:")
+            for key, value in doctor['telefonos'].items():
+                print(f"\t\t{key}: {value}")
+            print("\tEspecialidades:")
+            for key, value in doctor['especialidades'].items():
+                print(f"\t\t{key}: {value}")
+            print()
 
 def registrarConsulta(consultas, pacientes, doctores):
     """
@@ -399,8 +393,8 @@ def registrarConsulta(consultas, pacientes, doctores):
     # Validar el DNI del paciente
     dni_valido = False
     while not dni_valido:
-        dni_paciente = input("Ingrese el DNI del paciente: ")
-        if dni_paciente in pacientes:
+        id_paciente = input("Ingrese el DNI del paciente: ")
+        if id_paciente in pacientes:
             dni_valido = True
         else:
             print("El DNI del paciente no está registrado. Intente nuevamente.")
@@ -408,8 +402,8 @@ def registrarConsulta(consultas, pacientes, doctores):
     # Validar la matrícula del doctor
     matricula_valida = False
     while not matricula_valida:
-        matricula_doctor = input("Ingrese la matrícula del doctor: ")
-        if matricula_doctor in doctores:
+        id_doctor = input("Ingrese la matrícula del doctor: ")
+        if id_doctor in doctores:
             matricula_valida = True
         else:
             print("La matrícula del doctor no está registrada. Intente nuevamente.")
@@ -452,8 +446,8 @@ def registrarConsulta(consultas, pacientes, doctores):
     
     # Crear el registro de la consulta
     consultas[id_consulta] = {
-        "dni_paciente": dni_paciente,
-        "matricula_doctor": matricula_doctor,
+        "id_paciente": id_paciente,
+        "id_doctor": id_doctor,
         "fecha_consulta": fecha_consulta,
         "hora_consulta": hora_consulta,
         "motivo": motivo,
@@ -518,8 +512,8 @@ def consultasDelMes(consultas):
             print(f"Consulta N° {contador}")
             print(f"ID: {id_consulta}")
             print(f"  Fecha: {datos['fecha_consulta']} - Hora: {datos['hora_consulta']}")
-            print(f"  Paciente (DNI): {datos['dni_paciente']}")
-            print(f"  Doctor (Matrícula): {datos['matricula_doctor']}")
+            print(f"  Paciente (DNI): {datos['id_paciente']}")
+            print(f"  Doctor (Matrícula): {datos['id_doctor']}")
             print(f"  Motivo: {datos['motivo']}")
             print(f"  Estado: {datos['estado']}")
             print("--------------------------------------------------")
@@ -530,9 +524,6 @@ def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
     ...
 
 def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
-    ...
-
-def listadoPacientesPorEspecialidad(pacientes, doctores):
     ...
 
 #----------------------------------------------------------------------------------------------
@@ -550,26 +541,26 @@ def main():
             "activo": True,
             "nombre": "Juan",
             "apellido": "Pérez",
-            "telefono": "123456789",
             "email": "juan.perez@example.com",
             "fecha_nacimiento": "1990-05-15",
-            "direccion": {
-                "calle": "Av. Siempre Viva",
-                "numero": "123",
-                "ciudad": "Springfield"
+            "direccion": "Av. Siempre Viva 123, Springfield",
+            "telefonos": {
+                "id_telefono_1": "123456789",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
             }
         },
         "87654321": {
             "activo": True,
             "nombre": "Ana",
             "apellido": "Gómez",
-            "telefono": "987654321",
             "email": "ana.gomez@example.com",
             "fecha_nacimiento": "1985-10-20",
-            "direccion": {
-                "calle": "Calle Falsa",
-                "numero": "456",
-                "ciudad": "Shelbyville"
+            "direccion": "Calle Falsa 456, Shelbyville",
+            "telefonos": {
+                "id_telefono_1": "987654321",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
             }
         }
     }
@@ -579,20 +570,25 @@ def main():
             "activo": True,
             "nombre": "Dr. Roberto",
             "apellido": "Martínez",
-            "especialidad": "Cardiología",
-            "telefono": "1122334455",
             "email": "roberto.martinez@example.com",
-            "honorarios": {
-                "monto": 5000.0,
-                "moneda": "ARS"
+            "honorarios": 5000.0,
+            "telefonos": {
+                "id_telefono_1": "1122334455",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Cardiología",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
             }
         }
     }
 
     consultas = {
         "2025.10.21 10:30:00": {
-            "dni_paciente": "12345678",
-            "matricula_doctor": "1208661",
+            "id_paciente": "12345678",
+            "id_doctor": "1208661",
             "fecha_consulta": "2025-10-21",
             "hora_consulta": "10:30",
             "motivo": "Chequeo general",
