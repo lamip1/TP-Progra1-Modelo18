@@ -337,21 +337,24 @@ def modificarDoctor(doctores):
 def eliminarDoctor(doctores):
     """
     Explicacion: esta funcion elimina un doctor.
-    Entrada: esta funcion recibe como parametro el id del doctor junto con el diccionario de los doctores.
-    Salida: eliminacion del doctor.
+    Entrada: la funcion recibe como parametro un diccionario con los datos de los doctores.
+    Salida: la funcion retorna un mensaje de doctor eliminado o no eliminado.
     """
 
-    matricula = int(input("Ingresar el numero de matricula del doctor que desea eliminar: "))
-
+    matricula = input("Ingresar el numero de matricula del doctor que desea eliminar: ").strip()
+    
+    if not matricula:
+        return "Error: debe ingresar un número de matrícula."
+    
     if matricula in doctores:
-
+        if not doctores[matricula].get("activo", True):
+            return "El doctor ya está desactivado."
         doctores[matricula]["activo"] = False
-
         return "Doctor desactivado exitosamente."
-
     else:
-
         return "Doctor no encontrado."
+
+
 
 def listarDoctores(doctores):
     """
@@ -527,7 +530,46 @@ def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
     ...
 
 def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
-    ...
+    """
+    Explicación: muestra el total de honorarios generados por cada doctor en un año específico.
+
+    Entrada: la funcion recibe como parametro dos diccionarios, consultas y doctores.
+
+    Salida: la funcion imprime el total de los honorarios del doctor.
+    """
+    print("\n--- Resumen Anual de Honorarios por Doctor ---")
+    
+
+    año = input("Ingrese el año (AAAA): ").strip()
+    if not (año.isdigit() and 1900 <= int(año) <= 2025):
+        print("Año inválido. Operación cancelada.")
+        return
+    año = int(año)
+    
+    honorarios_por_doctor = {}
+    
+    for id_consulta, datos in consultas.items():
+        fecha = datos.get("fecha_consulta", "")
+        if len(fecha) == 10 and fecha.count("-") == 2:
+            partes = fecha.split("-")
+            año_c = int(partes[0])
+            if año_c == año:
+                id_doctor = datos["id_doctor"]
+                if id_doctor in doctores:
+                    honorario = doctores[id_doctor]["honorarios"]
+                    honorarios_por_doctor[id_doctor] = honorarios_por_doctor.get(id_doctor, 0) + honorario
+    
+    if not honorarios_por_doctor:
+        print(f"No hay consultas registradas para el año {año}.")
+    else:
+        print(f"\nResumen de honorarios generados en {año}:")
+        print("-----------------------------------------")
+        for id_doctor, total_honorarios in honorarios_por_doctor.items():
+            doctor = doctores[id_doctor]
+            print(f"Doctor: {doctor['nombre']} {doctor['apellido']} (Matrícula: {id_doctor})")
+            print(f"  Total honorarios: ${total_honorarios:.2f}")
+            print("-----------------------------------------")
+
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -708,7 +750,7 @@ def main():
                     modificarDoctor(doctores)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    eliminarDoctor(doctores)
+                    print(eliminarDoctor(doctores))
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarDoctores(doctores)
