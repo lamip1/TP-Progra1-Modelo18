@@ -527,58 +527,254 @@ def consultasDelMes(consultas):
 
 
 def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
-    
-    año = input("Año: ")
-    consultas_por_doctor = {}
-    for datos in consultas.values():
-        if datos["fecha_consulta"].startswith(año):
-            id_doctor = datos["id_doctor"]
-            if id_doctor in doctores:
-                consultas_por_doctor[id_doctor] = consultas_por_doctor.get(id_doctor, 0) + 1
-    for id_doctor, cantidad in consultas_por_doctor.items():
-        doctor = doctores[id_doctor]
-        print(f"{doctor['nombre']} {doctor['apellido']}: {cantidad}")
-
-def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
     """
-    Explicación: muestra el total de honorarios generados por cada doctor en un año específico.
-
-    Entrada: la funcion recibe como parametro dos diccionarios, consultas y doctores.
-
-    Salida: la funcion imprime el total de los honorarios del doctor.
-    """
-    print("\n--- Resumen Anual de Honorarios por Doctor ---")
+    Explicación: muestra en formato matricial la cantidad de consultas por doctor y por mes en un año específico.
     
-
+    Entrada: la función recibe como parámetro dos diccionarios, consultas y doctores.
+    
+    Salida: la función imprime una matriz con doctores en filas y meses en columnas.
+    """
+    print("\n--- Resumen Anual de Consultas por Doctor (Cantidades) ---")
+    
+    # Solicitar año
     año = input("Ingrese el año (AAAA): ").strip()
     if not (año.isdigit() and 1900 <= int(año) <= 2025):
         print("Año inválido. Operación cancelada.")
         return
     año = int(año)
     
-    honorarios_por_doctor = {}
+    # Inicializar matriz: {id_doctor: [ene, feb, mar, ..., dic]}
+    matriz_cantidades = {}
     
-    for id_consulta, datos in consultas.items():
-        fecha = datos.get("fecha_consulta", "")
+    # Inicializar contadores para cada doctor activo
+    for id_doctor, datos_doctor in doctores.items():
+        if datos_doctor.get("activo", True):
+            matriz_cantidades[id_doctor] = [0] * 12  # 12 meses
+    
+    # Contar consultas por doctor y mes
+    for id_consulta, datos_consulta in consultas.items():
+        fecha = datos_consulta.get("fecha_consulta", "")
+        
+        # Validar formato de fecha: AAAA-MM-DD
         if len(fecha) == 10 and fecha.count("-") == 2:
             partes = fecha.split("-")
-            año_c = int(partes[0])
-            if año_c == año:
-                id_doctor = datos["id_doctor"]
-                if id_doctor in doctores:
-                    honorario = doctores[id_doctor]["honorarios"]
-                    honorarios_por_doctor[id_doctor] = honorarios_por_doctor.get(id_doctor, 0) + honorario
+            if len(partes) == 3 and partes[0].isdigit() and partes[1].isdigit():
+                año_c = int(partes[0])
+                mes_c = int(partes[1])
+                
+                if año_c == año and 1 <= mes_c <= 12:
+                    id_doctor = datos_consulta.get("id_doctor", "")
+                    
+                    # Si el doctor existe y está activo, incrementar contador
+                    if id_doctor in matriz_cantidades:
+                        matriz_cantidades[id_doctor][mes_c - 1] += 1
     
-    if not honorarios_por_doctor:
-        print(f"No hay consultas registradas para el año {año}.")
-    else:
-        print(f"\nResumen de honorarios generados en {año}:")
-        print("-----------------------------------------")
-        for id_doctor, total_honorarios in honorarios_por_doctor.items():
+    # Verificar si hay datos para mostrar
+    if not matriz_cantidades:
+        print(f"\nNo hay doctores activos registrados.")
+        return
+    
+    # Verificar si hay consultas en el año
+    hay_consultas = any(sum(cantidades) > 0 for cantidades in matriz_cantidades.values())
+    if not hay_consultas:
+        print(f"\nNo hay consultas registradas para el año {año}.")
+        return
+    
+    # Imprimir encabezado
+    print(f"\n{'='*120}")
+    print(f"CANTIDADES TOTALES POR MES - AÑO {año}")
+    print(f"{'='*120}")
+    
+    # Nombres de meses abreviados
+    meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
+    
+    # Imprimir encabezado de columnas
+    print(f"{'Doctor':<25}", end="")
+    for mes in meses:
+        print(f"{mes}.{str(año)[2:]:>2}", end=" ")
+    print()
+    print(f"{'-'*120}")
+    
+    # Imprimir filas de datos
+    for id_doctor, cantidades in matriz_cantidades.items():
+        if id_doctor in doctores:
             doctor = doctores[id_doctor]
-            print(f"Doctor: {doctor['nombre']} {doctor['apellido']} (Matrícula: {id_doctor})")
-            print(f"  Total honorarios: ${total_honorarios:.2f}")
-            print("-----------------------------------------")
+            nombre_completo = f"{doctor['nombre']} {doctor['apellido']}"
+            
+            # Truncar nombre si es muy largo
+            if len(nombre_completo) > 23:
+                nombre_completo = nombre_completo[:20] + "..."
+            
+            print(f"{nombre_completo:<25}", end="")
+            
+            # Imprimir cantidades de cada mes (alineadas a la derecha)
+            for cantidad in cantidades:
+                print(f"{cantidad:>4} ", end="")
+            print()
+    
+    print(f"{'='*120}")
+
+
+def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
+    """
+    Explicación: muestra en formato matricial el total de honorarios por doctor y por mes en un año específico.
+
+    Entrada: la función recibe como parámetro dos diccionarios, consultas y doctores.
+
+    Salida: la función imprime una matriz con doctores en filas y meses en columnas mostrando honorarios.
+    """
+    print("\n--- Resumen Anual de Honorarios por Doctor ---")
+    
+    # Solicitar año
+    año = input("Ingrese el año (AAAA): ").strip()
+    if not (año.isdigit() and 1900 <= int(año) <= 2025):
+        print("Año inválido. Operación cancelada.")
+        return
+    año = int(año)
+    
+    # Inicializar matriz: {id_doctor: [ene, feb, mar, ..., dic]}
+    matriz_honorarios = {}
+    
+    # Inicializar contadores para cada doctor activo
+    for id_doctor, datos_doctor in doctores.items():
+        if datos_doctor.get("activo", True):
+            matriz_honorarios[id_doctor] = [0.0] * 12  # 12 meses
+    
+    # Acumular honorarios por doctor y mes
+    for id_consulta, datos_consulta in consultas.items():
+        fecha = datos_consulta.get("fecha_consulta", "")
+        
+        # Validar formato de fecha: AAAA-MM-DD
+        if len(fecha) == 10 and fecha.count("-") == 2:
+            partes = fecha.split("-")
+            if len(partes) == 3 and partes[0].isdigit() and partes[1].isdigit():
+                año_c = int(partes[0])
+                mes_c = int(partes[1])
+                
+                if año_c == año and 1 <= mes_c <= 12:
+                    id_doctor = datos_consulta.get("id_doctor", "")
+                    
+                    # Si el doctor existe y está activo, acumular honorarios
+                    if id_doctor in matriz_honorarios and id_doctor in doctores:
+                        honorario = doctores[id_doctor].get("honorarios", 0.0)
+                        matriz_honorarios[id_doctor][mes_c - 1] += honorario
+    
+    # Verificar si hay datos para mostrar
+    if not matriz_honorarios:
+        print(f"\nNo hay doctores activos registrados.")
+        return
+    
+    # Verificar si hay consultas en el año
+    hay_consultas = any(sum(honorarios) > 0 for honorarios in matriz_honorarios.values())
+    if not hay_consultas:
+        print(f"\nNo hay consultas registradas para el año {año}.")
+        return
+    
+    # Imprimir encabezado
+    print(f"\n{'='*160}")
+    print(f"HONORARIOS TOTALES POR MES - AÑO {año} (en pesos)")
+    print(f"{'='*160}")
+    
+    # Nombres de meses abreviados
+    meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
+    
+    # Imprimir encabezado de columnas
+    print(f"{'Doctor':<25}", end="")
+    for mes in meses:
+        print(f"{mes}.{str(año)[2:]:>2}", end="      ")
+    print()
+    print(f"{'-'*160}")
+    
+    # Imprimir filas de datos
+    for id_doctor, honorarios in matriz_honorarios.items():
+        if id_doctor in doctores:
+            doctor = doctores[id_doctor]
+            nombre_completo = f"{doctor['nombre']} {doctor['apellido']}"
+            
+            # Truncar nombre si es muy largo
+            if len(nombre_completo) > 23:
+                nombre_completo = nombre_completo[:20] + "..."
+            
+            print(f"{nombre_completo:<25}", end="")
+            
+            # Imprimir honorarios de cada mes (formato con separador de miles y 2 decimales)
+            for honorario in honorarios:
+                print(f"{honorario:>10,.2f}  ", end="")
+            print()
+    
+    print(f"{'='*160}")
+
+def rankingEspecialidadesMasConsultadas(consultas, doctores):
+    """
+    Explicación: muestra un ranking de las especialidades médicas más consultadas en un año específico.
+    
+    Entrada: la función recibe como parámetro dos diccionarios, consultas y doctores.
+    
+    Salida: la función imprime un ranking ordenado de especialidades por cantidad de consultas.
+    """
+    print("\n--- Ranking de Especialidades Más Consultadas ---")
+    
+    # Solicitar año
+    año = input("Ingrese el año (AAAA): ").strip()
+    if not (año.isdigit() and 1900 <= int(año) <= 2025):
+        print("Año inválido. Operación cancelada.")
+        return
+    año = int(año)
+    
+    # Diccionario para contar consultas por especialidad
+    especialidades_contador = {}
+    
+    # Recorrer todas las consultas del año
+    for id_consulta, datos_consulta in consultas.items():
+        fecha = datos_consulta.get("fecha_consulta", "")
+        
+        # Validar formato de fecha: AAAA-MM-DD
+        if len(fecha) == 10 and fecha.count("-") == 2:
+            partes = fecha.split("-")
+            if len(partes) == 3 and partes[0].isdigit():
+                año_c = int(partes[0])
+                
+                if año_c == año:
+                    id_doctor = datos_consulta.get("id_doctor", "")
+                    
+                    # Verificar que el doctor existe y está activo
+                    if id_doctor in doctores and doctores[id_doctor].get("activo", True):
+                        # Obtener todas las especialidades del doctor
+                        especialidades_dict = doctores[id_doctor].get("especialidades", {})
+                        
+                        # Contar cada especialidad (si no está vacía)
+                        for key, especialidad in especialidades_dict.items():
+                            especialidad = especialidad.strip()
+                            if especialidad:  # Solo contar si no está vacío
+                                especialidades_contador[especialidad] = especialidades_contador.get(especialidad, 0) + 1
+    
+    # Verificar si hay datos
+    if not especialidades_contador:
+        print(f"\nNo hay consultas registradas para el año {año}.")
+        return
+    
+    # Ordenar especialidades por cantidad de consultas (descendente)
+    especialidades_ordenadas = sorted(especialidades_contador.items(), key=lambda x: x[1], reverse=True)
+    
+    # Calcular total de consultas
+    total_consultas = sum(especialidades_contador.values())
+    
+    # Imprimir el ranking
+    print(f"\n{'='*70}")
+    print(f"RANKING DE ESPECIALIDADES MÁS CONSULTADAS - AÑO {año}")
+    print(f"{'='*70}")
+    print(f"{'Posición':<12}{'Especialidad':<35}{'Consultas':>10}{'%':>8}")
+    print(f"{'-'*70}")
+    
+    posicion = 1
+    for especialidad, cantidad in especialidades_ordenadas:
+        porcentaje = (cantidad / total_consultas) * 100
+        print(f"{posicion:<12}{especialidad:<35}{cantidad:>10}{porcentaje:>7.1f}%")
+        posicion += 1
+    
+    print(f"{'-'*70}")
+    print(f"{'TOTAL':<47}{total_consultas:>10}{100.0:>7.1f}%")
+    print(f"{'='*70}")
 
 
 #----------------------------------------------------------------------------------------------
@@ -591,6 +787,7 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables
     #-------------------------------------------------
+    # Datos precargados - 10 PACIENTES
     pacientes = {
         "12345678": {
             "activo": True,
@@ -617,13 +814,118 @@ def main():
                 "id_telefono_2": "",
                 "id_telefono_3": ""
             }
+        },
+        "23456789": {
+            "activo": True,
+            "nombre": "Carlos",
+            "apellido": "Rodríguez",
+            "email": "carlos.rodriguez@example.com",
+            "fecha_nacimiento": "1978-03-12",
+            "direccion": "Av. Libertador 789, Capital Federal",
+            "telefonos": {
+                "id_telefono_1": "1145678901",
+                "id_telefono_2": "1156789012",
+                "id_telefono_3": ""
+            }
+        },
+        "34567890": {
+            "activo": True,
+            "nombre": "María",
+            "apellido": "López",
+            "email": "maria.lopez@example.com",
+            "fecha_nacimiento": "1995-07-25",
+            "direccion": "Calle San Martín 234, Quilmes",
+            "telefonos": {
+                "id_telefono_1": "1167890123",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            }
+        },
+        "45678901": {
+            "activo": True,
+            "nombre": "Roberto",
+            "apellido": "Fernández",
+            "email": "roberto.fernandez@example.com",
+            "fecha_nacimiento": "1982-11-30",
+            "direccion": "Av. Corrientes 567, Buenos Aires",
+            "telefonos": {
+                "id_telefono_1": "1178901234",
+                "id_telefono_2": "1189012345",
+                "id_telefono_3": ""
+            }
+        },
+        "56789012": {
+            "activo": True,
+            "nombre": "Laura",
+            "apellido": "Martínez",
+            "email": "laura.martinez@example.com",
+            "fecha_nacimiento": "1988-02-14",
+            "direccion": "Calle Belgrano 890, Berazategui",
+            "telefonos": {
+                "id_telefono_1": "1190123456",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            }
+        },
+        "67890123": {
+            "activo": True,
+            "nombre": "Diego",
+            "apellido": "Sánchez",
+            "email": "diego.sanchez@example.com",
+            "fecha_nacimiento": "1992-09-08",
+            "direccion": "Av. Mitre 345, Avellaneda",
+            "telefonos": {
+                "id_telefono_1": "1101234567",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            }
+        },
+        "78901234": {
+            "activo": True,
+            "nombre": "Sofía",
+            "apellido": "Ramírez",
+            "email": "sofia.ramirez@example.com",
+            "fecha_nacimiento": "1998-06-19",
+            "direccion": "Calle Rivadavia 678, Lanús",
+            "telefonos": {
+                "id_telefono_1": "1112345678",
+                "id_telefono_2": "1123456789",
+                "id_telefono_3": ""
+            }
+        },
+        "89012345": {
+            "activo": True,
+            "nombre": "Javier",
+            "apellido": "Torres",
+            "email": "javier.torres@example.com",
+            "fecha_nacimiento": "1975-12-03",
+            "direccion": "Av. 9 de Julio 901, Buenos Aires",
+            "telefonos": {
+                "id_telefono_1": "1134567890",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            }
+        },
+        "90123456": {
+            "activo": True,
+            "nombre": "Valentina",
+            "apellido": "Díaz",
+            "email": "valentina.diaz@example.com",
+            "fecha_nacimiento": "2000-04-22",
+            "direccion": "Calle Moreno 123, Florencio Varela",
+            "telefonos": {
+                "id_telefono_1": "1145678902",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            }
         }
     }
 
+    # Datos precargados - 10 DOCTORES
     doctores = {
         "1208661": {
             "activo": True,
-            "nombre": "Dr. Roberto",
+            "nombre": "Roberto",
             "apellido": "Martínez",
             "email": "roberto.martinez@example.com",
             "honorarios": 5000.0,
@@ -637,9 +939,163 @@ def main():
                 "id_especialidad_2": "",
                 "id_especialidad_3": ""
             }
+        },
+        "1305782": {
+            "activo": True,
+            "nombre": "Ana",
+            "apellido": "García",
+            "email": "ana.garcia@example.com",
+            "honorarios": 4500.0,
+            "telefonos": {
+                "id_telefono_1": "1133445566",
+                "id_telefono_2": "1144556677",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Pediatría",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
+            }
+        },
+        "1402893": {
+            "activo": True,
+            "nombre": "Miguel",
+            "apellido": "Fernández",
+            "email": "miguel.fernandez@example.com",
+            "honorarios": 5500.0,
+            "telefonos": {
+                "id_telefono_1": "1155667788",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Traumatología",
+                "id_especialidad_2": "Ortopedia",
+                "id_especialidad_3": ""
+            }
+        },
+        "1509104": {
+            "activo": True,
+            "nombre": "Clara",
+            "apellido": "Ruiz",
+            "email": "clara.ruiz@example.com",
+            "honorarios": 4800.0,
+            "telefonos": {
+                "id_telefono_1": "1166778899",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Dermatología",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
+            }
+        },
+        "1601215": {
+            "activo": True,
+            "nombre": "Martín",
+            "apellido": "López",
+            "email": "martin.lopez@example.com",
+            "honorarios": 6000.0,
+            "telefonos": {
+                "id_telefono_1": "1177889900",
+                "id_telefono_2": "1188990011",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Neurología",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
+            }
+        },
+        "1708326": {
+            "activo": True,
+            "nombre": "Patricia",
+            "apellido": "Gómez",
+            "email": "patricia.gomez@example.com",
+            "honorarios": 4200.0,
+            "telefonos": {
+                "id_telefono_1": "1199001122",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Ginecología",
+                "id_especialidad_2": "Obstetricia",
+                "id_especialidad_3": ""
+            }
+        },
+        "1805437": {
+            "activo": True,
+            "nombre": "Fernando",
+            "apellido": "Pérez",
+            "email": "fernando.perez@example.com",
+            "honorarios": 5200.0,
+            "telefonos": {
+                "id_telefono_1": "1100112233",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Gastroenterología",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
+            }
+        },
+        "1902548": {
+            "activo": True,
+            "nombre": "Lucía",
+            "apellido": "Romero",
+            "email": "lucia.romero@example.com",
+            "honorarios": 4700.0,
+            "telefonos": {
+                "id_telefono_1": "1111223344",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Oftalmología",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
+            }
+        },
+        "2009659": {
+            "activo": True,
+            "nombre": "Gustavo",
+            "apellido": "Silva",
+            "email": "gustavo.silva@example.com",
+            "honorarios": 5800.0,
+            "telefonos": {
+                "id_telefono_1": "1122334455",
+                "id_telefono_2": "1133445566",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Cardiología",
+                "id_especialidad_2": "",
+                "id_especialidad_3": ""
+            }
+        },
+        "2106760": {
+            "activo": True,
+            "nombre": "Marta",
+            "apellido": "Vega",
+            "email": "marta.vega@example.com",
+            "honorarios": 4600.0,
+            "telefonos": {
+                "id_telefono_1": "1144556677",
+                "id_telefono_2": "",
+                "id_telefono_3": ""
+            },
+            "especialidades": {
+                "id_especialidad_1": "Psiquiatría",
+                "id_especialidad_2": "Psicología",
+                "id_especialidad_3": ""
+            }
         }
     }
 
+    # Datos precargados - 10 CONSULTAS
     consultas = {
         "2025.10.21 10:30:00": {
             "id_paciente": "12345678",
@@ -650,6 +1106,105 @@ def main():
             "diagnostico": "Sin novedades",
             "tratamiento": "Ninguno",
             "observaciones": "Paciente en buen estado de salud",
+            "estado": "Completada"
+        },
+        "2025.09.15 14:00:00": {
+            "id_paciente": "87654321",
+            "id_doctor": "1305782",
+            "fecha_consulta": "2025-09-15",
+            "hora_consulta": "14:00",
+            "motivo": "Control pediátrico",
+            "diagnostico": "Desarrollo normal",
+            "tratamiento": "Vacunación al día",
+            "observaciones": "Próximo control en 6 meses",
+            "estado": "Completada"
+        },
+        "2025.08.10 09:15:00": {
+            "id_paciente": "23456789",
+            "id_doctor": "1402893",
+            "fecha_consulta": "2025-08-10",
+            "hora_consulta": "09:15",
+            "motivo": "Dolor en rodilla izquierda",
+            "diagnostico": "Tendinitis rotuliana",
+            "tratamiento": "Antiinflamatorios y fisioterapia",
+            "observaciones": "Reposo relativo por 2 semanas",
+            "estado": "Completada"
+        },
+        "2025.07.22 16:45:00": {
+            "id_paciente": "34567890",
+            "id_doctor": "1509104",
+            "fecha_consulta": "2025-07-22",
+            "hora_consulta": "16:45",
+            "motivo": "Lesión en la piel",
+            "diagnostico": "Dermatitis de contacto",
+            "tratamiento": "Crema con corticoides",
+            "observaciones": "Evitar contacto con alérgenos",
+            "estado": "Completada"
+        },
+        "2025.06.05 11:00:00": {
+            "id_paciente": "45678901",
+            "id_doctor": "1601215",
+            "fecha_consulta": "2025-06-05",
+            "hora_consulta": "11:00",
+            "motivo": "Migrañas frecuentes",
+            "diagnostico": "Cefalea tensional crónica",
+            "tratamiento": "Analgésicos y técnicas de relajación",
+            "observaciones": "Seguimiento en 1 mes",
+            "estado": "Completada"
+        },
+        "2025.05.18 08:30:00": {
+            "id_paciente": "56789012",
+            "id_doctor": "1708326",
+            "fecha_consulta": "2025-05-18",
+            "hora_consulta": "08:30",
+            "motivo": "Control ginecológico anual",
+            "diagnostico": "Sin alteraciones",
+            "tratamiento": "Ninguno",
+            "observaciones": "Próximo control en 12 meses",
+            "estado": "Completada"
+        },
+        "2025.04.12 15:30:00": {
+            "id_paciente": "67890123",
+            "id_doctor": "1805437",
+            "fecha_consulta": "2025-04-12",
+            "hora_consulta": "15:30",
+            "motivo": "Dolor abdominal",
+            "diagnostico": "Gastritis leve",
+            "tratamiento": "Omeprazol y dieta blanda",
+            "observaciones": "Evitar alimentos irritantes",
+            "estado": "Completada"
+        },
+        "2025.03.25 10:00:00": {
+            "id_paciente": "78901234",
+            "id_doctor": "1902548",
+            "fecha_consulta": "2025-03-25",
+            "hora_consulta": "10:00",
+            "motivo": "Revisión de la vista",
+            "diagnostico": "Miopía leve",
+            "tratamiento": "Prescripción de lentes",
+            "observaciones": "Control anual recomendado",
+            "estado": "Completada"
+        },
+        "2025.02.14 13:15:00": {
+            "id_paciente": "89012345",
+            "id_doctor": "2009659",
+            "fecha_consulta": "2025-02-14",
+            "hora_consulta": "13:15",
+            "motivo": "Dolor en el pecho",
+            "diagnostico": "Angina de pecho estable",
+            "tratamiento": "Nitratos y betabloqueantes",
+            "observaciones": "Control cardiológico mensual",
+            "estado": "Completada"
+        },
+        "2025.01.30 17:00:00": {
+            "id_paciente": "90123456",
+            "id_doctor": "2106760",
+            "fecha_consulta": "2025-01-30",
+            "hora_consulta": "17:00",
+            "motivo": "Ansiedad y estrés",
+            "diagnostico": "Trastorno de ansiedad generalizada",
+            "tratamiento": "Terapia cognitivo-conductual",
+            "observaciones": "Sesiones semanales recomendadas",
             "estado": "Completada"
         }
     }
@@ -809,6 +1364,7 @@ def main():
                     print("[1] Consultas del Mes")
                     print("[2] Resumen Anual de Consultas por Doctor (Cantidades)")
                     print("[3] Resumen Anual de Consultas por Doctor (Honorarios)")
+                    print("[4] Ranking de Especialidades Más Consultadas")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -832,6 +1388,9 @@ def main():
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     resumenAnualConsultasPorDoctorHonorarios(consultas, doctores)
+                
+                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                    rankingEspecialidadesMasConsultadas(consultas, doctores)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
