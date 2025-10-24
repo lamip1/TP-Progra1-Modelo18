@@ -527,7 +527,17 @@ def consultasDelMes(consultas):
 
 
 def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
-    ...
+    
+    año = input("Año: ")
+    consultas_por_doctor = {}
+    for datos in consultas.values():
+        if datos["fecha_consulta"].startswith(año):
+            id_doctor = datos["id_doctor"]
+            if id_doctor in doctores:
+                consultas_por_doctor[id_doctor] = consultas_por_doctor.get(id_doctor, 0) + 1
+    for id_doctor, cantidad in consultas_por_doctor.items():
+        doctor = doctores[id_doctor]
+        print(f"{doctor['nombre']} {doctor['apellido']}: {cantidad}")
 
 def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
     """
@@ -799,7 +809,6 @@ def main():
                     print("[1] Consultas del Mes")
                     print("[2] Resumen Anual de Consultas por Doctor (Cantidades)")
                     print("[3] Resumen Anual de Consultas por Doctor (Honorarios)")
-                    print("[4] Listado de Pacientes por Especialidad")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -823,9 +832,6 @@ def main():
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     resumenAnualConsultasPorDoctorHonorarios(consultas, doctores)
-                
-                elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    listadoPacientesPorEspecialidad(pacientes, doctores)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
