@@ -1,0 +1,172 @@
+{
+    "1208661": {
+        "activo": true,
+        "nombre": "Roberto",
+        "apellido": "Martínez",
+        "email": "roberto.martinez@example.com",
+        "honorarios": 5000.0,
+        "telefonos": {
+            "id_telefono_1": "1122334455",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Cardiología",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "1305782": {
+        "activo": true,
+        "nombre": "Ana",
+        "apellido": "García",
+        "email": "ana.garcia@example.com",
+        "honorarios": 4500.0,
+        "telefonos": {
+            "id_telefono_1": "1133445566",
+            "id_telefono_2": "1144556677",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Pediatría",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "1402893": {
+        "activo": true,
+        "nombre": "Miguel",
+        "apellido": "Fernández",
+        "email": "miguel.fernandez@example.com",
+        "honorarios": 5500.0,
+        "telefonos": {
+            "id_telefono_1": "1155667788",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Traumatología",
+            "id_especialidad_2": "Ortopedia",
+            "id_especialidad_3": ""
+        }
+    },
+    "1509104": {
+        "activo": true,
+        "nombre": "Clara",
+        "apellido": "Ruiz",
+        "email": "clara.ruiz@example.com",
+        "honorarios": 4800.0,
+        "telefonos": {
+            "id_telefono_1": "1166778899",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Dermatología",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "1601215": {
+        "activo": true,
+        "nombre": "Martín",
+        "apellido": "López",
+        "email": "martin.lopez@example.com",
+        "honorarios": 6000.0,
+        "telefonos": {
+            "id_telefono_1": "1177889900",
+            "id_telefono_2": "1188990011",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Neurología",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "1708326": {
+        "activo": true,
+        "nombre": "Patricia",
+        "apellido": "Gómez",
+        "email": "patricia.gomez@example.com",
+        "honorarios": 4200.0,
+        "telefonos": {
+            "id_telefono_1": "1199001122",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Ginecología",
+            "id_especialidad_2": "Obstetricia",
+            "id_especialidad_3": ""
+        }
+    },
+    "1805437": {
+        "activo": true,
+        "nombre": "Fernando",
+        "apellido": "Pérez",
+        "email": "fernando.perez@example.com",
+        "honorarios": 5200.0,
+        "telefonos": {
+            "id_telefono_1": "1100112233",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Gastroenterología",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "1902548": {
+        "activo": true,
+        "nombre": "Lucía",
+        "apellido": "Romero",
+        "email": "lucia.romero@example.com",
+        "honorarios": 4700.0,
+        "telefonos": {
+            "id_telefono_1": "1111223344",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Oftalmología",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "2009659": {
+        "activo": true,
+        "nombre": "Gustavo",
+        "apellido": "Silva",
+        "email": "gustavo.silva@example.com",
+        "honorarios": 5800.0,
+        "telefonos": {
+            "id_telefono_1": "1122334455",
+            "id_telefono_2": "1133445566",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Cardiología",
+            "id_especialidad_2": "",
+            "id_especialidad_3": ""
+        }
+    },
+    "2106760": {
+        "activo": true,
+        "nombre": "Marta",
+        "apellido": "Vega",
+        "email": "marta.vega@example.com",
+        "honorarios": 4600.0,
+        "telefonos": {
+            "id_telefono_1": "1144556677",
+            "id_telefono_2": "",
+            "id_telefono_3": ""
+        },
+        "especialidades": {
+            "id_especialidad_1": "Psiquiatría",
+            "id_especialidad_2": "Psicología",
+            "id_especialidad_3": ""
+        }
+    }
+}

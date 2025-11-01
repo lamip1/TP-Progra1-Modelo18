@@ -1,0 +1,123 @@
+{
+    "2025.10.21 10:30:00": {
+        "id_paciente": "12345678",
+        "id_doctor": "1208661",
+        "fecha_consulta": "2025-10-21",
+        "hora_consulta": "10:30",
+        "motivo": "Chequeo general",
+        "diagnostico": "Sin novedades",
+        "tratamiento": "Ninguno",
+        "observaciones": "Paciente en buen estado de salud",
+        "estado": "Completada"
+    },
+    "2025.09.15 14:00:00": {
+        "id_paciente": "87654321",
+        "id_doctor": "1305782",
+        "fecha_consulta": "2025-09-15",
+        "hora_consulta": "14:00",
+        "motivo": "Control pediátrico",
+        "diagnostico": "Desarrollo normal",
+        "tratamiento": "Vacunación al día",
+        "observaciones": "Próximo control en 6 meses",
+        "estado": "Completada"
+    },
+    "2025.08.10 09:15:00": {
+        "id_paciente": "23456789",
+        "id_doctor": "1402893",
+        "fecha_consulta": "2025-08-10",
+        "hora_consulta": "09:15",
+        "motivo": "Dolor en rodilla izquierda",
+        "diagnostico": "Tendinitis rotuliana",
+        "tratamiento": "Antiinflamatorios y fisioterapia",
+        "observaciones": "Reposo relativo por 2 semanas",
+        "estado": "Completada"
+    },
+    "2025.07.22 16:45:00": {
+        "id_paciente": "34567890",
+        "id_doctor": "1509104",
+        "fecha_consulta": "2025-07-22",
+        "hora_consulta": "16:45",
+        "motivo": "Lesión en la piel",
+        "diagnostico": "Dermatitis de contacto",
+        "tratamiento": "Crema con corticoides",
+        "observaciones": "Evitar contacto con alérgenos",
+        "estado": "Completada"
+    },
+    "2025.06.05 11:00:00": {
+        "id_paciente": "45678901",
+        "id_doctor": "1601215",
+        "fecha_consulta": "2025-06-05",
+        "hora_consulta": "11:00",
+        "motivo": "Migrañas frecuentes",
+        "diagnostico": "Cefalea tensional crónica",
+        "tratamiento": "Analgésicos y técnicas de relajación",
+        "observaciones": "Seguimiento en 1 mes",
+        "estado": "Completada"
+    },
+    "2025.05.18 08:30:00": {
+        "id_paciente": "56789012",
+        "id_doctor": "1708326",
+        "fecha_consulta": "2025-05-18",
+        "hora_consulta": "08:30",
+        "motivo": "Control ginecológico anual",
+        "diagnostico": "Sin alteraciones",
+        "tratamiento": "Ninguno",
+        "observaciones": "Próximo control en 12 meses",
+        "estado": "Completada"
+    },
+    "2025.04.12 15:30:00": {
+        "id_paciente": "67890123",
+        "id_doctor": "1805437",
+        "fecha_consulta": "2025-04-12",
+        "hora_consulta": "15:30",
+        "motivo": "Dolor abdominal",
+        "diagnostico": "Gastritis leve",
+        "tratamiento": "Omeprazol y dieta blanda",
+        "observaciones": "Evitar alimentos irritantes",
+        "estado": "Completada"
+    },
+    "2025.03.25 10:00:00": {
+        "id_paciente": "78901234",
+        "id_doctor": "1902548",
+        "fecha_consulta": "2025-03-25",
+        "hora_consulta": "10:00",
+        "motivo": "Revisión de la vista",
+        "diagnostico": "Miopía leve",
+        "tratamiento": "Prescripción de lentes",
+        "observaciones": "Control anual recomendado",
+        "estado": "Completada"
+    },
+    "2025.02.14 13:15:00": {
+        "id_paciente": "89012345",
+        "id_doctor": "2009659",
+        "fecha_consulta": "2025-02-14",
+        "hora_consulta": "13:15",
+        "motivo": "Dolor en el pecho",
+        "diagnostico": "Angina de pecho estable",
+        "tratamiento": "Nitratos y betabloqueantes",
+        "observaciones": "Control cardiológico mensual",
+        "estado": "Completada"
+    },
+    "2025.01.30 17:00:00": {
+        "id_paciente": "90123456",
+        "id_doctor": "2106760",
+        "fecha_consulta": "2025-01-30",
+        "hora_consulta": "17:00",
+        "motivo": "Ansiedad y estrés",
+        "diagnostico": "Trastorno de ansiedad generalizada",
+        "tratamiento": "Terapia cognitivo-conductual",
+        "observaciones": "Sesiones semanales recomendadas",
+        "estado": "Completada"
+    },
+    "2025.10.29 17:28:51": {
+        "id_paciente": "45910286",
+        "id_doctor": "1208661",
+        "fecha_consulta": "2025-01-12",
+        "hora_consulta": "14:35",
+        "motivo": "Revison General",
+        "diagnostico": "Ver hoja de paciente",
+        "tratamiento": "Ver hoja de paciente",
+        "observaciones": "Revisar afiliacion con obra social para procedimientos marcados en la hoja",
+        "estado": "Completada"
+    }
+}
