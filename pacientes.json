@@ -130,7 +130,7 @@
         }
     },
     "45910286": {
-        "activo": false,
+        "activo": true,
         "nombre": "Bruno",
         "apellido": "Motroni",
         "email": "brunomotroni2@gmail.com",

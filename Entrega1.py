@@ -1100,18 +1100,10 @@ def guardarJson(path, data):
             pass
 
 
-def guardarTodo(pacientes, doctores, consultas, pacientes_path=None, doctores_path=None, consultas_path=None):
+def guardarTodo(pacientes, doctores, consultas, pacientes_path='pacientes.json', doctores_path='doctores.json', consultas_path='consultas.json'):
     """Guarda los tres diccionarios en sus archivos JSON correspondientes.
-    Si no se pasan rutas, se usan archivos en la misma carpeta que este script.
+    Usa rutas relativas (archivos en el directorio de trabajo).
     """
-    base_dir = os.path.dirname(__file__)
-    if pacientes_path is None:
-        pacientes_path = os.path.join(base_dir, 'pacientes.json')
-    if doctores_path is None:
-        doctores_path = os.path.join(base_dir, 'doctores.json')
-    if consultas_path is None:
-        consultas_path = os.path.join(base_dir, 'consultas.json')
-
     guardarJson(pacientes_path, pacientes)
     guardarJson(doctores_path, doctores)
     guardarJson(consultas_path, consultas)
@@ -1127,10 +1119,10 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables: cargar desde JSON
     #-------------------------------------------------
-    base_dir = os.path.dirname(__file__)
-    pacientes_path = os.path.join(base_dir, 'pacientes.json')
-    doctores_path = os.path.join(base_dir, 'doctores.json')
-    consultas_path = os.path.join(base_dir, 'consultas.json')
+    # rutas relativas (archivos en la carpeta de trabajo)
+    pacientes_path = 'pacientes.json'
+    doctores_path = 'doctores.json'
+    consultas_path = 'consultas.json'
 
     pacientes = cargarJson(pacientes_path, {})
     doctores = cargarJson(doctores_path, {})
