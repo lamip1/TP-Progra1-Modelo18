@@ -110,8 +110,19 @@ def ingresarPaciente(pacientes):
         direccion = input("Ingrese la dirección del paciente: ").strip()
 
         telefonos = {}
-        for i in range(1, 4):
-            telefonos[f"id_telefono_{i}"] = input(f"Ingrese el teléfono {i} del paciente (deje vacío si no aplica): ").strip()
+        contador = 1
+
+        while True:
+                numero = input(f"Ingrese el teléfono {contador} del paciente (deje vacío si no aplica): ").strip()
+                
+                if numero == "":
+
+                    break
+
+                telefonos[f"id_telefono_{contador}"] = numero
+
+                contador += 1
+                
 
         pacientes_local[dni] = {
             "activo": True,
@@ -214,6 +225,7 @@ def listarPacientes(pacientes):
             print(f"\tDirección: {paciente.get('direccion','')}")
             print("\tTeléfonos:")
             for key, value in paciente.get('telefonos',{}).items():
+                
                 print(f"\t\t{key}: {value}")
             print()
 
@@ -249,12 +261,32 @@ def ingresarDoctor(doctores):
                 print("Valor inválido. Intente nuevamente.")
 
         telefonos = {}
-        for i in range(1, 4):
-            telefonos[f"id_telefono_{i}"] = input(f"Ingrese el teléfono {i} del doctor (deje vacío si no aplica): ").strip()
+        contador = 1
+        
+        while True:
+                numero = input(f"Ingrese el teléfono {contador} del doctor (deje vacío si no aplica): ").strip()
+                
+                if numero == "":
+
+                    break
+
+                telefonos[f"id_telefono_{contador}"] = numero
+
+                contador += 1
 
         especialidades = {}
-        for i in range(1, 4):
-            especialidades[f"id_especialidad_{i}"] = input(f"Ingrese la especialidad {i} del doctor (deje vacío si no aplica): ").strip()
+        contador2 = 1
+        
+        while True:
+                especialidad = input(f"Ingrese la especialidad {contador2} del doctor (deje vacío si no aplica): ").strip()
+                
+                if especialidad == "":
+
+                    break
+
+                especialidades[f"especialidad_{contador2}"] = especialidad
+
+                contador2 += 1
 
         doctores_local[matricula] = {
             "activo": True,
