@@ -15,7 +15,7 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 import time
 import json
-
+import re
 # Rutas de archivos (constantes de módulo) - usan nombres relativos
 PACIENTES_PATH = 'pacientes.json'
 DOCTORES_PATH = 'doctores.json'
@@ -28,7 +28,7 @@ CONSULTAS_PATH = 'consultas.json'
 # Estructura de datos para el sistema de centro de salud
 
 # Entidad: Paciente
-pacientes = {
+"""pacientes = {
     "dni": {  # Clave principal: DNI del paciente
         "activo": True,           # bool
         "nombre": "",           # str
@@ -78,7 +78,7 @@ consultas = {
         "observaciones": "",  # str
         "estado": ""          # str
     }
-}
+}"""
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
@@ -105,9 +105,15 @@ def ingresarPaciente(pacientes):
 
         nombre = input("Ingrese el nombre del paciente: ").strip()
         apellido = input("Ingrese el apellido del paciente: ").strip()
-        email = input("Ingrese el email del paciente: ").strip()
         fecha_nacimiento = input("Ingrese la fecha de nacimiento del paciente (AAAA-MM-DD): ").strip()
         direccion = input("Ingrese la dirección del paciente: ").strip()
+
+        pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        while True:
+            email = input("Ingrese el email del paciente: ").strip()
+            if re.match(pat, email):
+                break
+            print("Email inválido. Intente nuevamente.")
 
         telefonos = {}
         contador = 1
@@ -162,7 +168,23 @@ def modificarPaciente(pacientes):
 
         nombre = input(f"Nombre actual ({paciente.get('nombre','')}): ").strip() or paciente.get('nombre','')
         apellido = input(f"Apellido actual ({paciente.get('apellido','')}): ").strip() or paciente.get('apellido','')
-        email = input(f"Email actual ({paciente.get('email','')}): ").strip() or paciente.get('email','')
+        
+        pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+
+        while True:
+            emailInput = input(f"Email actual ({paciente.get('email','')}): ").strip()
+
+        
+            if not emailInput:
+                email = paciente.get('email', '')
+                break
+
+            if re.match(pat, emailInput):
+                email = emailInput
+                break
+            else:
+                print("Email inválido. Intente nuevamente.")
+                
         fecha_nacimiento = input(f"Fecha nacimiento actual ({paciente.get('fecha_nacimiento','')}): ").strip() or paciente.get('fecha_nacimiento','')
         direccion = input(f"Dirección actual ({paciente.get('direccion','')}): ").strip() or paciente.get('direccion','')
 
@@ -237,6 +259,8 @@ def ingresarDoctor(doctores):
         if not matricula:
             print("Error: La matrícula no puede estar vacía.")
             return doctores_local
+
+        
         if matricula in doctores_local:
             print("\nYa existe un doctor con esa matrícula.")
             opcion = input("¿Desea modificar los datos? (S/N): ").upper()
@@ -244,50 +268,52 @@ def ingresarDoctor(doctores):
                 print("No se realizaron cambios.")
                 return doctores_local
 
+        
         nombre = input("Ingrese el nombre del doctor: ").strip()
         apellido = input("Ingrese el apellido del doctor: ").strip()
-        email = input("Ingrese el email del doctor: ").strip()
 
-        honorarios = 0.0
+        
         while True:
+            honorarios_input = input("Ingrese el monto de los honorarios: ").strip()
             try:
-                honorarios_input = input("Ingrese el monto de los honorarios: ").strip()
                 honorarios = float(honorarios_input)
                 if honorarios < 0:
-                    print("Los honorarios no pueden ser negativos")
+                    print("Los honorarios no pueden ser negativos.")
                     continue
                 break
             except ValueError:
-                print("Valor inválido. Intente nuevamente.")
+                print("Valor inválido. Ingrese un número.")
 
+        
+        
+        pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        while True:
+            email = input("Ingrese el email del doctor: ").strip()
+            if re.match(pat, email):
+                break
+            print("Email inválido. Intente nuevamente.")
+
+        
         telefonos = {}
         contador = 1
-        
         while True:
-                numero = input(f"Ingrese el teléfono {contador} del doctor (deje vacío si no aplica): ").strip()
-                
-                if numero == "":
+            numero = input(f"Ingrese el teléfono {contador} del doctor (deje vacío para terminar): ").strip()
+            if numero == "":
+                break
+            telefonos[f"id_telefono_{contador}"] = numero
+            contador += 1
 
-                    break
-
-                telefonos[f"id_telefono_{contador}"] = numero
-
-                contador += 1
-
+        
         especialidades = {}
         contador2 = 1
-        
         while True:
-                especialidad = input(f"Ingrese la especialidad {contador2} del doctor (deje vacío si no aplica): ").strip()
-                
-                if especialidad == "":
+            especialidad = input(f"Ingrese la especialidad {contador2} del doctor (deje vacío para terminar): ").strip()
+            if especialidad == "":
+                break
+            especialidades[f"especialidad_{contador2}"] = especialidad
+            contador2 += 1
 
-                    break
-
-                especialidades[f"especialidad_{contador2}"] = especialidad
-
-                contador2 += 1
-
+        
         doctores_local[matricula] = {
             "activo": True,
             "nombre": nombre,
@@ -308,6 +334,7 @@ def ingresarDoctor(doctores):
 
     return doctores_local
 
+
 def modificarDoctor(doctores):
     doctores_local = cargarJson(DOCTORES_PATH, {})
     print("\n--- Modificar Doctor ---")
@@ -325,7 +352,21 @@ def modificarDoctor(doctores):
 
         nombre = input(f"Nombre actual ({doctor.get('nombre','')}): ").strip() or doctor.get('nombre','')
         apellido = input(f"Apellido actual ({doctor.get('apellido','')}): ").strip() or doctor.get('apellido','')
-        email = input(f"Email actual ({doctor.get('email','')}): ").strip() or doctor.get('email','')
+        
+        pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+
+        while True:
+            emailInput = input(f"Email actual ({doctor.get('email','')}): ").strip()
+
+            if not emailInput:
+                email = doctor.get('email', '')
+                break
+
+            if re.match(pat, emailInput):
+                email = emailInput
+                break
+            else:
+                print("Email inválido. Intente nuevamente.")
 
         honorarios_input = input(f"Honorarios actuales ({doctor.get('honorarios',0.0)}): ").strip()
         try:
