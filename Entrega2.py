@@ -589,11 +589,12 @@ def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
     print(f"\n{'='*120}")
     print(f"CANTIDADES TOTALES POR MES - AÑO {año}")
     print(f"{'='*120}")
-    meses = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"]
+    meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
     print(f"{'Doctor':<25}", end="")
     for mes in meses:
-        print(f"{mes}.{str(año)[2:]:>2}", end=" ")
-    print(); print(f"{'-'*120}")
+        print(f"{mes:>6}", end="")  # Ajusta el ancho de cada columna a 6 caracteres
+    print()
+    print(f"{'-'*120}")
 
     for id_doctor, cantidades in matriz_cantidades.items():
         if id_doctor in doctores_local:
@@ -603,7 +604,7 @@ def resumenAnualConsultasPorDoctorCantidades(consultas, doctores):
                 nombre_completo = nombre_completo[:20] + "..."
             print(f"{nombre_completo:<25}", end="")
             for cantidad in cantidades:
-                print(f"{cantidad:>4} ", end="")
+                print(f"{cantidad:>6}", end="")  # Alinea los valores con el mismo ancho
             print()
     print(f"{'='*120}")
 
@@ -641,14 +642,14 @@ def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
         print(f"\nNo hay consultas registradas para el año {año}.")
         return
 
-    print(f"\n{'='*160}")
+    print(f"\n{'='*167}")
     print(f"HONORARIOS TOTALES POR MES - AÑO {año} (en pesos)")
-    print(f"{'='*160}")
+    print(f"{'='*167}")
     meses = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"]
     print(f"{'Doctor':<25}", end="")
     for mes in meses:
-        print(f"{mes}.{str(año)[2:]:>2}", end="      ")
-    print(); print(f"{'-'*160}")
+        print(f"{mes}.{str(año)[2:]:>1.5}", end="      ")
+    print(); print(f"{'-'*167}")
 
     for id_doctor, honorarios in matriz_honorarios.items():
         if id_doctor in doctores_local:
@@ -660,7 +661,7 @@ def resumenAnualConsultasPorDoctorHonorarios(consultas, doctores):
             for honorario in honorarios:
                 print(f"{honorario:>10,.2f}  ", end="")
             print()
-    print(f"{'='*160}")
+    print(f"{'='*167}")
 
 def rankingEspecialidadesMasConsultadas(consultas, doctores):
     consultas_local = cargarJson(CONSULTAS_PATH, {})
@@ -691,7 +692,16 @@ def rankingEspecialidadesMasConsultadas(consultas, doctores):
         print(f"\nNo hay consultas registradas para el año {año}.")
         return
 
-    especialidades_ordenadas = sorted(especialidades_contador.items(), key=lambda x: x[1], reverse=True)
+    # Función auxiliar para ordenar por cantidad de consultas
+    def obtener_valor_maximo(especialidad):
+        return especialidades_contador[especialidad]
+
+    especialidades_ordenadas = list(especialidades_contador.keys())
+    for i in range(len(especialidades_ordenadas)):
+        for j in range(i + 1, len(especialidades_ordenadas)):
+            if obtener_valor_maximo(especialidades_ordenadas[i]) < obtener_valor_maximo(especialidades_ordenadas[j]):
+                especialidades_ordenadas[i], especialidades_ordenadas[j] = especialidades_ordenadas[j], especialidades_ordenadas[i]
+
     total_consultas = sum(especialidades_contador.values())
 
     print(f"\n{'='*70}")
@@ -700,7 +710,8 @@ def rankingEspecialidadesMasConsultadas(consultas, doctores):
     print(f"{ 'Posición':<12}{'Especialidad':<35}{'Consultas':>10}{'%':>8}")
     print(f"{'-'*70}")
     posicion = 1
-    for especialidad, cantidad in especialidades_ordenadas:
+    for especialidad in especialidades_ordenadas:
+        cantidad = especialidades_contador[especialidad]
         porcentaje = (cantidad / total_consultas) * 100
         print(f"{posicion:<12}{especialidad:<35}{cantidad:>10}{porcentaje:>7.1f}%")
         posicion += 1

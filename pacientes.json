@@ -1,150 +1,162 @@
 {
-  "12345678": {
-    "activo": true,
-    "nombre": "Juan",
-    "apellido": "Pérez",
-    "email": "juan.perez@example.com",
-    "fecha_nacimiento": "1990-05-15",
-    "direccion": "Av. Siempre Viva 123, Springfield",
-    "telefonos": {
-      "id_telefono_1": "123456789"
+    "12345678": {
+        "activo": true,
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "email": "juan.perez@example.com",
+        "fecha_nacimiento": "1990-05-15",
+        "direccion": "Av. Siempre Viva 123, Springfield",
+        "telefonos": {
+            "id_telefono_1": "123456789"
+        }
+    },
+    "87654321": {
+        "activo": true,
+        "nombre": "Ana",
+        "apellido": "Gómez",
+        "email": "ana.gomez@example.com",
+        "fecha_nacimiento": "1985-10-20",
+        "direccion": "Calle Falsa 456, Shelbyville",
+        "telefonos": {
+            "id_telefono_1": "987654321"
+        }
+    },
+    "23456789": {
+        "activo": true,
+        "nombre": "Carlos",
+        "apellido": "Rodríguez",
+        "email": "carlos.rodriguez@example.com",
+        "fecha_nacimiento": "1978-03-12",
+        "direccion": "Av. Libertador 789, Capital Federal",
+        "telefonos": {
+            "id_telefono_1": "1145678901",
+            "id_telefono_2": "1156789012"
+        }
+    },
+    "34567890": {
+        "activo": true,
+        "nombre": "María",
+        "apellido": "López",
+        "email": "maria.lopez@example.com",
+        "fecha_nacimiento": "1995-07-25",
+        "direccion": "Calle San Martín 234, Quilmes",
+        "telefonos": {
+            "id_telefono_1": "1167890123"
+        }
+    },
+    "45678901": {
+        "activo": true,
+        "nombre": "Roberto",
+        "apellido": "Fernández",
+        "email": "roberto.fernandez@example.com",
+        "fecha_nacimiento": "1982-11-30",
+        "direccion": "Av. Corrientes 567, Buenos Aires",
+        "telefonos": {
+            "id_telefono_1": "1178901234",
+            "id_telefono_2": "1189012345"
+        }
+    },
+    "56789012": {
+        "activo": true,
+        "nombre": "Laura",
+        "apellido": "Martínez",
+        "email": "laura.martinez@example.com",
+        "fecha_nacimiento": "1988-02-14",
+        "direccion": "Calle Belgrano 890, Berazategui",
+        "telefonos": {
+            "id_telefono_1": "1190123456"
+        }
+    },
+    "67890123": {
+        "activo": true,
+        "nombre": "Diego",
+        "apellido": "Sánchez",
+        "email": "diego.sanchez@example.com",
+        "fecha_nacimiento": "1992-09-08",
+        "direccion": "Av. Mitre 345, Avellaneda",
+        "telefonos": {
+            "id_telefono_1": "1101234567"
+        }
+    },
+    "78901234": {
+        "activo": true,
+        "nombre": "Sofía",
+        "apellido": "Ramírez",
+        "email": "sofia.ramirez@example.com",
+        "fecha_nacimiento": "1998-06-19",
+        "direccion": "Calle Rivadavia 678, Lanús",
+        "telefonos": {
+            "id_telefono_1": "1112345678",
+            "id_telefono_2": "1123456789"
+        }
+    },
+    "89012345": {
+        "activo": true,
+        "nombre": "Javier",
+        "apellido": "Torres",
+        "email": "javier.torres@example.com",
+        "fecha_nacimiento": "1975-12-03",
+        "direccion": "Av. 9 de Julio 901, Buenos Aires",
+        "telefonos": {
+            "id_telefono_1": "1134567890"
+        }
+    },
+    "90123456": {
+        "activo": true,
+        "nombre": "Valentina",
+        "apellido": "Díaz",
+        "email": "valentina.diaz@example.com",
+        "fecha_nacimiento": "2000-04-22",
+        "direccion": "Calle Moreno 123, Florencio Varela",
+        "telefonos": {
+            "id_telefono_1": "1145678902"
+        }
+    },
+    "45910286": {
+        "activo": true,
+        "nombre": "Bruno",
+        "apellido": "Motroni",
+        "email": "brunomotroni4@gmail.com",
+        "fecha_nacimiento": "2003-09-14",
+        "direccion": "Calle 148 797",
+        "telefonos": {
+            "id_telefono_1": "12 34567890",
+            "id_telefono_2": "45 67893456",
+            "id_telefono_3": ""
+        }
+    },
+    "23456654": {
+        "activo": true,
+        "nombre": "Pedro",
+        "apellido": "Gutierrez",
+        "email": "pGutierres@outlook.com",
+        "fecha_nacimiento": "2000-01-12",
+        "direccion": "Av. Libertador",
+        "telefonos": {
+            "id_telefono_1": "112223333"
+        }
+    },
+    "43233444": {
+        "activo": true,
+        "nombre": "Candela",
+        "apellido": "Messi",
+        "email": "cMessi@gmail.com",
+        "fecha_nacimiento": "2001-12-12",
+        "direccion": "Callao 1222",
+        "telefonos": {
+            "id_telefono_1": "11343243",
+            "id_telefono_2": "11555555"
+        }
+    },
+    "6789043": {
+        "activo": true,
+        "nombre": "Alejandro",
+        "apellido": "Garcia",
+        "email": "mart@hotmail.com",
+        "fecha_nacimiento": "2007-14-70",
+        "direccion": "Calle 567 4567",
+        "telefonos": {
+            "id_telefono_1": "5678990764"
+        }
     }
-  },
-  "87654321": {
-    "activo": true,
-    "nombre": "Ana",
-    "apellido": "Gómez",
-    "email": "ana.gomez@example.com",
-    "fecha_nacimiento": "1985-10-20",
-    "direccion": "Calle Falsa 456, Shelbyville",
-    "telefonos": {
-      "id_telefono_1": "987654321"
-    }
-  },
-  "23456789": {
-    "activo": true,
-    "nombre": "Carlos",
-    "apellido": "Rodríguez",
-    "email": "carlos.rodriguez@example.com",
-    "fecha_nacimiento": "1978-03-12",
-    "direccion": "Av. Libertador 789, Capital Federal",
-    "telefonos": {
-      "id_telefono_1": "1145678901",
-      "id_telefono_2": "1156789012"
-    }
-  },
-  "34567890": {
-    "activo": true,
-    "nombre": "María",
-    "apellido": "López",
-    "email": "maria.lopez@example.com",
-    "fecha_nacimiento": "1995-07-25",
-    "direccion": "Calle San Martín 234, Quilmes",
-    "telefonos": {
-      "id_telefono_1": "1167890123"
-    }
-  },
-  "45678901": {
-    "activo": true,
-    "nombre": "Roberto",
-    "apellido": "Fernández",
-    "email": "roberto.fernandez@example.com",
-    "fecha_nacimiento": "1982-11-30",
-    "direccion": "Av. Corrientes 567, Buenos Aires",
-    "telefonos": {
-      "id_telefono_1": "1178901234",
-      "id_telefono_2": "1189012345"
-    }
-  },
-  "56789012": {
-    "activo": true,
-    "nombre": "Laura",
-    "apellido": "Martínez",
-    "email": "laura.martinez@example.com",
-    "fecha_nacimiento": "1988-02-14",
-    "direccion": "Calle Belgrano 890, Berazategui",
-    "telefonos": {
-      "id_telefono_1": "1190123456"
-    }
-  },
-  "67890123": {
-    "activo": true,
-    "nombre": "Diego",
-    "apellido": "Sánchez",
-    "email": "diego.sanchez@example.com",
-    "fecha_nacimiento": "1992-09-08",
-    "direccion": "Av. Mitre 345, Avellaneda",
-    "telefonos": {
-      "id_telefono_1": "1101234567"
-    }
-  },
-  "78901234": {
-    "activo": true,
-    "nombre": "Sofía",
-    "apellido": "Ramírez",
-    "email": "sofia.ramirez@example.com",
-    "fecha_nacimiento": "1998-06-19",
-    "direccion": "Calle Rivadavia 678, Lanús",
-    "telefonos": {
-      "id_telefono_1": "1112345678",
-      "id_telefono_2": "1123456789"
-    }
-  },
-  "89012345": {
-    "activo": true,
-    "nombre": "Javier",
-    "apellido": "Torres",
-    "email": "javier.torres@example.com",
-    "fecha_nacimiento": "1975-12-03",
-    "direccion": "Av. 9 de Julio 901, Buenos Aires",
-    "telefonos": {
-      "id_telefono_1": "1134567890"
-    }
-  },
-  "90123456": {
-    "activo": true,
-    "nombre": "Valentina",
-    "apellido": "Díaz",
-    "email": "valentina.diaz@example.com",
-    "fecha_nacimiento": "2000-04-22",
-    "direccion": "Calle Moreno 123, Florencio Varela",
-    "telefonos": {
-      "id_telefono_1": "1145678902"
-    }
-  },
-  "45910286": {
-    "activo": true,
-    "nombre": "Bruno",
-    "apellido": "Motroni",
-    "email": "brunomotroni2@gmail.com",
-    "fecha_nacimiento": "2004-07-12",
-    "direccion": "Av Dr Sabin 3215",
-    "telefonos": {
-      "id_telefono_1": "12 34567890",
-      "id_telefono_2": "45 67893456"
-    }
-  },
-  "23456654": {
-    "activo": true,
-    "nombre": "Pedro",
-    "apellido": "Gutierrez",
-    "email": "pGutierres@outlook.com",
-    "fecha_nacimiento": "2000-01-12",
-    "direccion": "Av. Libertador",
-    "telefonos": {
-      "id_telefono_1": "112223333"
-    }
-  },
-  "43233444": {
-    "activo": true,
-    "nombre": "Candela",
-    "apellido": "Messi",
-    "email": "cMessi@gmail.com",
-    "fecha_nacimiento": "2001-12-12",
-    "direccion": "Callao 1222",
-    "telefonos": {
-      "id_telefono_1": "11343243",
-      "id_telefono_2": "11555555"
-    }
-  }
 }
